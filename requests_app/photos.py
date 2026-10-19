@@ -15,7 +15,7 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 
 from .models import Photo
 
-MAX_UPLOAD_BYTES = 5 * 1024 * 1024
+MAX_UPLOAD_BYTES = 4 * 1024 * 1024  # Vercel rejects request bodies over 4.5 MB
 MAX_PIXELS = 40_000_000  # refuse decompression bombs before decoding
 MAX_EDGE = 1600
 ALLOWED_FORMATS = {"JPEG", "PNG", "WEBP"}
@@ -24,7 +24,7 @@ ALLOWED_FORMATS = {"JPEG", "PNG", "WEBP"}
 def process_upload(uploaded):
     """Validate an uploaded file and return an unsaved Photo with EXIF-free JPEG data."""
     if uploaded.size > MAX_UPLOAD_BYTES:
-        raise ValidationError("Photos must be 5 MB or smaller.")
+        raise ValidationError("Photos must be 4 MB or smaller.")
     raw = uploaded.read()
     try:
         with Image.open(io.BytesIO(raw)) as probe:

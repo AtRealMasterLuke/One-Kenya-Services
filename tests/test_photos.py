@@ -71,7 +71,7 @@ def test_gif_is_refused():
 
 
 def test_too_big_is_refused():
-    with pytest.raises(ValidationError, match="5 MB"):
+    with pytest.raises(ValidationError, match="4 MB"):
         process_upload(upload(b"\xff" * (MAX_UPLOAD_BYTES + 1)))
 
 

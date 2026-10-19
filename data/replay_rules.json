@@ -1,5 +1,5 @@
 {
-  "_about": "How the NYC 311 sample (data/raw/nyc311_2025-03-01_to_2025-03-07.csv) is replayed into Murang'a. Implemented twice: by `manage.py replay_311` (through the real app, PostGIS and state machine) and independently by scripts/verify_analytics.py (pandas + shapely). The two must produce identical dashboard figures. Full prose in docs/replay.md.",
+  "_about": "How the NYC 311 sample (data/raw/nyc311_2025-03-01_to_2025-03-07.csv) is replayed into Murang'a. Implemented twice: by `manage.py replay_311` (through the real app, ward lookup and state machine) and independently by scripts/verify_analytics.py (pandas + shapely). The two must produce identical dashboard figures. Full prose in docs/replay.md.",
   "dataset": {
     "name": "NYC 311 Service Requests from 2010 to Present",
     "url": "https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9",

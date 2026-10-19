@@ -1,0 +1,9 @@
+KenyaMojaEnv/
+.env
+db.sqlite3
+docs/
+tests/
+data/raw/
+data/tmp_downloads/
+.github/
+.lighthouseci/

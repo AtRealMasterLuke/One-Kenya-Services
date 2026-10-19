@@ -55,7 +55,7 @@ class DetailsForm(forms.Form):
     photo = forms.ImageField(
         required=False,
         label="Photo (optional)",
-        help_text="JPEG, PNG or WebP, up to 5 MB. Location data is removed from the photo before it is saved.",
+        help_text="JPEG, PNG or WebP, up to 4 MB. Location data is removed from the photo before it is saved.",
         widget=forms.ClearableFileInput(attrs={"accept": "image/jpeg,image/png,image/webp"}),
     )
 

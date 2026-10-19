@@ -67,7 +67,7 @@ Level 1 is the minimum for any public-facing application. Requirements are group
 
 | # | Requirement | Status | How |
 |---|---|---|---|
-| 9.1.1 | TLS everywhere | Met | `SECURE_SSL_REDIRECT`, HSTS (30 days) when DEBUG is off; Render terminates TLS. |
+| 9.1.1 | TLS everywhere | Met | `SECURE_SSL_REDIRECT`, HSTS (30 days) when DEBUG is off; Vercel terminates TLS. |
 
 ## V10 Malicious code / V14 Configuration
 
@@ -81,7 +81,7 @@ Level 1 is the minimum for any public-facing application. Requirements are group
 
 | # | Requirement | Status | How |
 |---|---|---|---|
-| 12.1.1 | Upload size limits | Met | 5 MB file, 40 MP decoded, 6 MB request. |
+| 12.1.1 | Upload size limits | Met | 4 MB file, 40 MP decoded, 4.5 MB request. |
 | 12.2.1 | File type checked by content | Met | Pillow detects the format from the bytes, not the name. |
 | 12.4.1 | Uploads stored outside the web root | Met | In the database, served only through an authorised view. |
 | 12.5.x | Execution of uploaded content | Met | Re-encoded JPEG; never served from a static path. |

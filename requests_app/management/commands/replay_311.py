@@ -1,6 +1,6 @@
 """
 Replay the NYC 311 sample through the real application: every row becomes a report created by
-services.create_request() (PostGIS ward lookup, duplicate check, charter deadline) and moves
+services.create_request() (ward lookup, duplicate check, charter deadline) and moves
 through services.transition() (state machine, history, database triggers). Idempotent: rows
 already replayed are skipped, so it is safe to run on every start.
 """

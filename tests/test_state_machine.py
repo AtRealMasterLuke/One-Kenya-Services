@@ -63,11 +63,11 @@ class CaseLifecycle(RuleBasedStateMachine):
         ward = Ward.objects.get(name="Township")
         category = Category.objects.get(code="water_leak")
         self.req = services.create_request(
-            citizen=self.actors["owner"], category=category, point=ward.geom.point_on_surface,
+            citizen=self.actors["owner"], category=category, point=ward.shape.representative_point(),
             description="Property test case",
         )
         self.target = services.create_request(
-            citizen=self.actors["stranger"], category=category, point=ward.geom.point_on_surface,
+            citizen=self.actors["stranger"], category=category, point=ward.shape.representative_point(),
             description="Merge target",
         )
         self.expected_status = Status.PENDING
@@ -179,9 +179,9 @@ def test_new_reports_must_start_pending(make_request):
     with pytest.raises(IntegrityError, match="must start as pending"):
         _raw(
             """INSERT INTO requests_app_servicerequest
-               (citizen_id, category_id, ward_id, location, location_approximate, landmark, description, status,
+               (citizen_id, category_id, ward_id, latitude, longitude, location_approximate, landmark, description, status,
                 created_at, updated_at, due_at, escalation_level, source, external_ref)
-               SELECT citizen_id, category_id, ward_id, location, false, '', 'x', 'resolved',
+               SELECT citizen_id, category_id, ward_id, latitude, longitude, false, '', 'x', 'resolved',
                       now(), now(), now(), 0, 'web', '' FROM requests_app_servicerequest WHERE id=%s""",
             [req.pk],
         )

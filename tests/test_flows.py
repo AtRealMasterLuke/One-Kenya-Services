@@ -132,3 +132,12 @@ def test_reflected_form_values_are_escaped(client):
     body = resp.content.decode()
     assert payload not in body
     assert "&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;" in body
+
+
+@pytest.mark.django_db
+def test_cron_endpoint_needs_the_secret(client, settings):
+    settings.CRON_SECRET = "s3cret"
+    assert client.get("/cron/maintenance").status_code == 401
+    assert client.get("/cron/maintenance", HTTP_AUTHORIZATION="Bearer wrong").status_code == 401
+    resp = client.get("/cron/maintenance", HTTP_AUTHORIZATION="Bearer s3cret")
+    assert resp.status_code == 200 and set(resp.json()) == {"escalated", "auto_closed", "sms_sent"}

@@ -27,18 +27,20 @@ def create_request(*, citizen, category, point=None, ward=None, description, lan
     created_at = created_at or timezone.now()
     approximate = point is None
     if approximate:
-        point = ward.geom.point_on_surface
+        point = ward.shape.representative_point()
     else:
         ward = ward_for(point)
         if ward is None:
             raise OutsideCounty("That location is outside Murang'a County. Move the pin to where the problem is.")
     # Approximate locations all sit on the ward centre, so distance tells us nothing about duplicates.
-    duplicate = None if approximate else possible_duplicates(category, point, created_at).first()
+    nearby = [] if approximate else possible_duplicates(category, point, created_at)
+    duplicate = nearby[0] if nearby else None
     req = ServiceRequest.objects.create(
         citizen=citizen,
         category=category,
         ward=ward,
-        location=point,
+        latitude=point.y,
+        longitude=point.x,
         location_approximate=approximate,
         landmark=landmark,
         description=description,

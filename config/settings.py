@@ -22,10 +22,12 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or ("insecure-dev-key" if DEBUG
 if not SECRET_KEY:
     raise RuntimeError("DJANGO_SECRET_KEY must be set when DJANGO_DEBUG is off")
 
+ON_VERCEL = bool(os.environ.get("VERCEL"))
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
-if render_host := os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
-    ALLOWED_HOSTS.append(render_host)
 CSRF_TRUSTED_ORIGINS = [f"https://{h}" for h in ALLOWED_HOSTS if h not in {"localhost", "127.0.0.1"}]
+if ON_VERCEL:
+    ALLOWED_HOSTS.append(".vercel.app")
+    CSRF_TRUSTED_ORIGINS.append("https://*.vercel.app")
 
 
 INSTALLED_APPS = [
@@ -36,7 +38,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
-    "django.contrib.gis",
     "django.forms",
     "axes",
     "accounts",
@@ -80,12 +81,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgis://kenyamoja:kenyamoja@localhost:5432/kenyamoja",
-        conn_max_age=60,
+        default="postgres://kenyamoja:kenyamoja@localhost:5432/kenyamoja",
+        conn_max_age=0 if ON_VERCEL else 60,  # serverless functions shouldn't hold connections open
     )
 }
-# Render and most hosts hand out postgres:// URLs; GeoDjango needs the PostGIS backend.
-DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 
 
 AUTH_USER_MODEL = "accounts.User"
@@ -118,18 +117,22 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = None if ON_VERCEL else BASE_DIR / "staticfiles"  # no collectstatic on Vercel
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+    # Vercel has no collectstatic step, so there WhiteNoise serves straight from static/.
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage" if ON_VERCEL
+                    else "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
+WHITENOISE_USE_FINDERS = ON_VERCEL
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Photos are re-encoded and stored in the database, so uploads only need to fit in memory.
-DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
-FILE_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
+# Vercel caps request bodies at 4.5 MB.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 4_500_000
+FILE_UPLOAD_MAX_MEMORY_SIZE = 4_500_000
 
 
 # Security headers. HTTPS-only settings switch on outside DEBUG.
@@ -158,7 +161,12 @@ AUTO_CLOSE_RESOLVED_AFTER_DAYS = 7
 AT_USERNAME = os.environ.get("AT_USERNAME", "sandbox")
 AT_API_KEY = os.environ.get("AT_API_KEY", "")
 AT_SENDER_ID = os.environ.get("AT_SENDER_ID", "")
-SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000")
+SITE_URL = os.environ.get("SITE_URL") or (
+    f"https://{os.environ['VERCEL_PROJECT_PRODUCTION_URL']}" if os.environ.get("VERCEL_PROJECT_PRODUCTION_URL")
+    else "http://localhost:8000"
+)
+# Vercel Cron sends "Authorization: Bearer <CRON_SECRET>" to /cron/maintenance.
+CRON_SECRET = os.environ.get("CRON_SECRET", "")
 
 LOGGING = {
     "version": 1,

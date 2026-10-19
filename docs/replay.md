@@ -54,7 +54,7 @@ The rules are written down in `data/replay_rules.json`, and both implementations
 ```
 
 The loaded cases spread over 27 of the 35 wards. Every row goes through the real code path:
-the PostGIS ward lookup, duplicate detection, charter deadline, state machine, history and
+the ward lookup, duplicate detection, charter deadline, state machine, history and
 database triggers.
 
 ## Limits

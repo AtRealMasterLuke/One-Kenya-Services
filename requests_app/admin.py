@@ -1,4 +1,4 @@
-from django.contrib.gis import admin
+from django.contrib import admin
 
 from .models import CaseEvent, Category, Department, Notification, ServiceRequest, Ward
 
@@ -14,8 +14,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Ward)
-class WardAdmin(admin.GISModelAdmin):
+class WardAdmin(admin.ModelAdmin):
     list_display = ["name", "constituency", "code"]
+    exclude = ["boundary"]
     list_filter = ["constituency"]
 
 
@@ -30,7 +31,7 @@ class ReadOnlyEvents(admin.TabularInline):
 
 
 @admin.register(ServiceRequest)
-class ServiceRequestAdmin(admin.GISModelAdmin):
+class ServiceRequestAdmin(admin.ModelAdmin):
     """Read-only here: status changes must go through the app so they are checked and logged."""
 
     list_display = ["reference", "category", "ward", "status", "created_at", "due_at", "source"]

@@ -7,7 +7,7 @@ own output (`manage.py export_analytics`). If the app's ward routing, deadline a
 state machine replay or SQL aggregation is wrong, the two disagree.
 
 Deliberately different methods from the app:
-  - wards:      shapely point-in-polygon on the GeoJSON file (app: PostGIS ST_Contains)
+  - wards:      shapely point-in-polygon on the GeoJSON file (app: the same check, but with ward shapes loaded from the database)
   - deadlines:  a minute-by-minute working-time grid with cumulative sums
                 (app: walks day by day through opening windows)
   - state at T: read directly from created/closed dates (app: replays the event history)

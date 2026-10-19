@@ -20,7 +20,7 @@
       <dt>Target</dt><dd>{{ req.due_at|date:"D j M Y, H:i" }} <span class="help">{{ req.category.target_label }}{% if req.category.sla_is_assumed %} (working assumption){% else %} (MUWASCO charter){% endif %}</span></dd>
       {% if full %}
         {% if req.landmark %}<dt>Landmark</dt><dd>{{ req.landmark }}</dd>{% endif %}
-        <dt>Coordinates</dt><dd><a href="https://www.openstreetmap.org/?mlat={{ req.location.y|floatformat:5 }}&amp;mlon={{ req.location.x|floatformat:5 }}#map=18/{{ req.location.y|floatformat:5 }}/{{ req.location.x|floatformat:5 }}" rel="noopener noreferrer">{{ req.location.y|floatformat:5 }}, {{ req.location.x|floatformat:5 }}</a></dd>
+        <dt>Coordinates</dt><dd><a href="https://www.openstreetmap.org/?mlat={{ req.latitude|floatformat:5 }}&amp;mlon={{ req.longitude|floatformat:5 }}#map=18/{{ req.latitude|floatformat:5 }}/{{ req.longitude|floatformat:5 }}" rel="noopener noreferrer">{{ req.latitude|floatformat:5 }}, {{ req.longitude|floatformat:5 }}</a></dd>
         {% if user.is_county_staff %}<dt>Reported by</dt><dd>{{ req.citizen.full_name }}{% if req.source != "replay" %}, {{ req.citizen.phone }}{% endif %} <span class="help">via {{ req.get_source_display }}</span></dd>{% endif %}
         <dt>Following</dt><dd>{{ req.followers.count }} other{{ req.followers.count|pluralize }}</dd>
       {% endif %}
@@ -83,7 +83,7 @@
       <ul class="list-plain">
         {% for c in merge_candidates %}
         <li class="checkbox"><input type="radio" name="merge_into" value="{{ c.pk }}" id="merge-{{ c.pk }}" {% if c.pk == req.suspected_duplicate_id %}checked{% endif %}>
-          <label for="merge-{{ c.pk }}"><a href="{% url 'request_detail' c.pk %}">{{ c.reference }}</a>, {{ c.distance.m|floatformat:0 }} m away, reported {{ c.created_at|date:"j M H:i" }}</label></li>
+          <label for="merge-{{ c.pk }}"><a href="{% url 'request_detail' c.pk %}">{{ c.reference }}</a>, {{ c.distance_m|floatformat:0 }} m away, reported {{ c.created_at|date:"j M H:i" }}</label></li>
         {% endfor %}
       </ul>
     </fieldset>

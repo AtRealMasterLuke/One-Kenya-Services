@@ -1,6 +1,9 @@
+from functools import cached_property
+
 from django.conf import settings
-from django.contrib.gis.db import models
+from django.db import models
 from django.utils import timezone
+from shapely.geometry import Point, shape
 
 
 class Status(models.TextChoices):
@@ -35,13 +38,17 @@ class Ward(models.Model):
     code = models.CharField(max_length=32, unique=True, help_text="IEBC county assembly ward code, e.g. 0525")
     name = models.CharField(max_length=80)
     constituency = models.CharField(max_length=80)
-    geom = models.MultiPolygonField(srid=4326)
+    boundary = models.JSONField(help_text="GeoJSON (Multi)Polygon in WGS84 longitude/latitude")
 
     class Meta:
         ordering = ["constituency", "name"]
 
     def __str__(self):
         return f"{self.name} ({self.constituency})"
+
+    @cached_property
+    def shape(self):
+        return shape(self.boundary)
 
 
 class Category(models.Model):
@@ -81,7 +88,8 @@ class ServiceRequest(models.Model):
     citizen = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="service_requests")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="requests")
     ward = models.ForeignKey(Ward, on_delete=models.PROTECT, related_name="requests")
-    location = models.PointField(geography=True, srid=4326)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
     location_approximate = models.BooleanField(
         default=False, help_text="Reporter chose a ward instead of a point; location is the ward's centre."
     )
@@ -112,6 +120,7 @@ class ServiceRequest(models.Model):
         indexes = [
             models.Index(fields=["status", "due_at"]),
             models.Index(fields=["ward", "category"]),
+            models.Index(fields=["category", "latitude", "longitude"]),
         ]
         constraints = [
             models.CheckConstraint(
@@ -130,6 +139,10 @@ class ServiceRequest(models.Model):
     @property
     def reference(self):
         return f"MUR-{self.pk:06d}" if self.pk else "MUR-new"
+
+    @property
+    def point(self):
+        return Point(self.longitude, self.latitude)
 
     @property
     def is_open(self):

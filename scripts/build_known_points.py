@@ -35,7 +35,7 @@ for w in Ward.objects.order_by("code"):
         if norm(r[1]) == base and names[base] == 1 and not (rounded(lat) or rounded(lon)):
             p = make_point(lat, lon)
             got = ward_for(p)
-            note = "" if got == w else f"falls in {got.name}, {w.geom.distance(p) * 111320:.0f} m outside {w.name}"
+            note = "" if got == w else f"falls in {got.name}, {w.shape.distance(p) * 111320:.0f} m outside {w.name}"
             out.append([r[1], r[0], lat, lon, w.name, w.code, w.constituency, note])
 
 with open("data/known_points.csv", "w", newline="", encoding="utf-8") as f:

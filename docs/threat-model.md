@@ -8,7 +8,7 @@ accountability record); and the service itself.
 administrators, Open311 client apps (with a citizen's key), Africa's Talking (outbound SMS), and
 anonymous visitors.
 
-**Trust boundaries:** browser ↔ app (HTTPS); Open311 client ↔ app; app ↔ PostGIS; app ↔
+**Trust boundaries:** browser ↔ app (HTTPS); Open311 client ↔ app; app ↔ PostgreSQL (Neon); app ↔
 Africa's Talking; app ↔ boundary download at setup (HDX).
 
 | | Threat | Where | Mitigation | Evidence |
@@ -19,7 +19,7 @@ Africa's Talking; app ↔ boundary download at setup (HDX).
 | **T**ampering | Status forced past the rules (e.g. closing without resolving) | Any code path | State machine in the service layer **and** a PostgreSQL trigger generated from the same table | `test_trigger_matches_transition_table` (all 20 pairs), property test |
 | | History edited or deleted to hide a missed deadline | DB | Append-only trigger on `CaseEvent` rejects UPDATE/DELETE; admin shows history read-only | `test_history_is_append_only` |
 | | Cross-site request forgery against status actions | Forms | Django CSRF on all forms; Open311 POST is CSRF-exempt but needs an API key and ignores cookies | `test_post_without_csrf_token_still_works` |
-| | Malicious upload (polyglot, decompression bomb, script) | Photo | Pillow decodes, verifies and **re-encodes** from pixels; JPEG/PNG/WebP only; 5 MB and 40 MP limits; served with `nosniff` from an authorised view | `test_polyglot_payload_does_not_survive`, `test_non_images_are_refused` |
+| | Malicious upload (polyglot, decompression bomb, script) | Photo | Pillow decodes, verifies and **re-encodes** from pixels; JPEG/PNG/WebP only; 4 MB and 40 MP limits; served with `nosniff` from an authorised view | `test_polyglot_payload_does_not_survive`, `test_non_images_are_refused` |
 | **R**epudiation | Officer denies having resolved or merged a case | History | Every change records actor, role at the time, timestamp and note; notes are required for resolve, reopen and merge | `history_explains_status` invariant |
 | **I**nformation disclosure | Citizen reads another citizen's report by changing the ID (IDOR) | Detail, photo, action URLs | One access function for every case view; strangers get 404, the same as for a missing case | `tests/test_access.py` (14 tests) |
 | | Location leaked through photo EXIF | Photo | EXIF stripped by re-encoding; orientation applied first | `test_gps_and_device_exif_are_removed` |

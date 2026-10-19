@@ -14,4 +14,5 @@ urlpatterns = [
     path("account/api-keys/", views.api_keys, name="api_keys"),
     path("staff/", views.staff_queue, name="staff_queue"),
     path("staff/analytics/", views.staff_analytics, name="staff_analytics"),
+    path("cron/maintenance", views.cron_maintenance, name="cron_maintenance"),
 ]

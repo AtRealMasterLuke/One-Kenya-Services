@@ -9,7 +9,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import pytest
-from django.contrib.gis.geos import GEOSGeometry
+from shapely.geometry import shape
 from django.utils import timezone
 
 from requests_app import services
@@ -46,7 +46,7 @@ def test_gazetteer_constituencies_agree_with_iebc_constituency_map():
     the separately published IEBC/HDX constituency map puts it in? Measured 90.5% when the IEBC
     ward file was chosen (docs/evidence/ward_source_comparison.txt); fail if routing gets worse."""
     hdx = json.loads((DATA / "boundaries/muranga_constituencies_iebc_hdx.geojson").read_text(encoding="utf-8"))
-    constituencies = [(f["properties"]["adm2_name"], GEOSGeometry(json.dumps(f["geometry"]), srid=4326)) for f in hdx["features"]]
+    constituencies = [(f["properties"]["adm2_name"], shape(f["geometry"])) for f in hdx["features"]]
     agree = total = 0
     for line in (DATA / "raw/geonames_KE_muranga.tsv").read_text(encoding="utf-8").splitlines():
         r = line.split("\t")
@@ -112,7 +112,7 @@ class TestDuplicates:
         near = make_request("streetlight", point=_offset(point_in, 10))
         found = list(possible_duplicates(Category.objects.get(code="streetlight"), point_in, timezone.now()))
         assert found[:2] == [near, far]
-        assert found[0].distance.m == pytest.approx(10, abs=1)
+        assert found[0].distance_m == pytest.approx(10, abs=1)
 
     def test_ward_only_reports_never_count_as_duplicates(self, citizen, other_citizen, township):
         streetlight = Category.objects.get(code="streetlight")

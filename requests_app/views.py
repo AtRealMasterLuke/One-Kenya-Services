@@ -128,7 +128,7 @@ def request_detail(request, pk):
         ]
         context["can_merge"] = Status.MERGED in statemachine.allowed_targets(req, request.user)
         if context["can_merge"] and not req.location_approximate:
-            context["merge_candidates"] = possible_duplicates(req.category, req.location, req.created_at, exclude_pk=req.pk)[:10]
+            context["merge_candidates"] = possible_duplicates(req.category, req.point, req.created_at, exclude_pk=req.pk)[:10]
         context["note_form"] = NoteForm()
     else:
         context["events"] = req.events.filter(kind="status")
@@ -245,6 +245,19 @@ def staff_analytics(request):
         "result": result, "as_of": timezone.localtime(as_of), "source": source or "",
         "tables": [("By problem", by_category), ("By ward (most open cases first)", by_ward)],
         "sources": ServiceRequest.Source.choices,
+    })
+
+
+def cron_maintenance(request):
+    """Vercel Cron calls this daily (vercel.json): escalate overdue cases, auto-close confirmed
+    ones, retry failed SMS. Vercel sends "Authorization: Bearer <CRON_SECRET>"."""
+    if not settings.CRON_SECRET or request.headers.get("Authorization") != f"Bearer {settings.CRON_SECRET}":
+        return HttpResponse(status=401)
+    from . import notifications
+    return JsonResponse({
+        "escalated": services.escalate_overdue(),
+        "auto_closed": services.auto_close_resolved(),
+        "sms_sent": notifications.send_pending(),
     })
 
 

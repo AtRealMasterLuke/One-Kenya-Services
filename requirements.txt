@@ -7,3 +7,5 @@ django-axes==7.0.1
 holidays==0.62
 Pillow==11.0.0
 requests==2.32.3
+shapely==2.0.6
+pyshp==2.3.1

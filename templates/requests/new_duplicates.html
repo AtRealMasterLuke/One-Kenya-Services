@@ -14,7 +14,7 @@
   <li class="request-item">
     <div>
       <strong>{{ d.reference }}: {{ d.category.name }}</strong>
-      <span class="help">{{ d.distance.m|floatformat:0 }} m away · reported {{ d.created_at|timesince }} ago · {{ d.get_status_display }}{% if d.landmark %} · near {{ d.landmark }}{% endif %}</span>
+      <span class="help">{{ d.distance_m|floatformat:0 }} m away · reported {{ d.created_at|timesince }} ago · {{ d.get_status_display }}{% if d.landmark %} · near {{ d.landmark }}{% endif %}</span>
     </div>
     <form method="post" action="{% url 'request_follow' d.pk %}">
       {% csrf_token %}

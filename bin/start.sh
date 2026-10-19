@@ -12,7 +12,7 @@ if [ "$SEED_DEMO" = "1" ]; then
 fi
 
 if [ "${MAINTENANCE_LOOP:-0}" = "1" ]; then
-    # Hosts without a cron service (e.g. Render's free tier): escalate overdue cases,
+    # Hosts without a cron service: escalate overdue cases,
     # auto-close confirmed ones and retry failed SMS every 15 minutes.
     (while true; do sleep 900; python manage.py run_case_maintenance || true; done) &
 fi

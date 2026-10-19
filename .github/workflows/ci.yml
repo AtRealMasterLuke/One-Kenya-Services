@@ -6,7 +6,7 @@ on:
 
 jobs:
   tests:
-    name: Tests (PostGIS via Testcontainers)
+    name: Tests (PostgreSQL via Testcontainers)
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -14,8 +14,6 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - name: GeoDjango system libraries
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends binutils libproj-dev gdal-bin
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - name: Cache downloaded ward boundaries
         uses: actions/cache@v4
@@ -25,12 +23,12 @@ jobs:
       - name: Django checks
         run: DJANGO_SECRET_KEY=ci python manage.py check --deploy --fail-level ERROR
         env:
-          DATABASE_URL: postgis://unused@localhost/unused
+          DATABASE_URL: postgres://unused@localhost/unused
       - name: Migrations are up to date
         run: DJANGO_SECRET_KEY=ci python manage.py makemigrations --check --dry-run
         env:
-          DATABASE_URL: postgis://unused@localhost/unused
-      - name: pytest (starts postgis/postgis:16-3.4 with Testcontainers)
+          DATABASE_URL: postgres://unused@localhost/unused
+      - name: pytest (starts postgres:16 with Testcontainers)
         run: pytest -p no:cacheprovider --create-db
 
   replay:

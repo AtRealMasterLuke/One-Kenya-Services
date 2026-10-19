@@ -70,7 +70,7 @@ def township():
 
 @pytest.fixture
 def point_in(township):
-    return township.geom.point_on_surface
+    return township.shape.representative_point()
 
 
 @pytest.fixture

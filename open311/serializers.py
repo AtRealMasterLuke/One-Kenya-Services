@@ -55,8 +55,8 @@ def service_request(req):
         "address": f"{req.ward.name} ward, {req.ward.constituency}",
         "address_id": req.ward.code,
         "zipcode": None,
-        "lat": round(req.location.y, PUBLIC_COORDINATE_PLACES),
-        "long": round(req.location.x, PUBLIC_COORDINATE_PLACES),
+        "lat": round(req.latitude, PUBLIC_COORDINATE_PLACES),
+        "long": round(req.longitude, PUBLIC_COORDINATE_PLACES),
     }
 
 

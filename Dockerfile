@@ -4,11 +4,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# GeoDjango needs GEOS, PROJ and GDAL at runtime.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends binutils libproj-dev gdal-bin \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
 COPY requirements.txt requirements-dev.txt ./

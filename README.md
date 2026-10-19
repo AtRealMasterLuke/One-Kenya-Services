@@ -11,13 +11,13 @@ each one the way a county operation would need it:
 | Feature | What "done properly" means here |
 |---|---|
 | Registration / login | Phone-number accounts (the number the county texts), three roles, lockout after 5 failed sign-ins. **Tests prove no citizen can read another's report** over any URL. |
-| Submit a request | Pin on a map, use GPS, or pick a ward (for people who can't use a map). **Auto-routed to a ward by PostGIS** using IEBC boundaries chosen by measurement. **Duplicates within 100 m are offered before the citizen writes anything**, and officers can merge them. Photos are re-encoded with **GPS EXIF removed**. |
+| Submit a request | Pin on a map, use GPS, or pick a ward (for people who can't use a map). **Auto-routed to a ward** (point-in-polygon with shapely) using IEBC boundaries chosen by measurement. **Duplicates within 100 m are offered before the citizen writes anything**, and officers can merge them. Photos are re-encoded with **GPS EXIF removed**. |
 | Status tracking | An **enforced state machine**: the service layer *and* a database trigger reject illegal moves. **Append-only history** (a trigger blocks edits and deletes). The citizen, not the officer, confirms a fix, or reopens it. |
 | Admin dashboard | Queue per department, ordered by **deadline from the MUWASCO charter** (in working hours, skipping public holidays). Overdue cases highlighted and **escalated** by SMS. |
 | Analytics | Open vs resolved, plus **median time to resolve, deadline breach rate and backlog age**, by ward and category, **reconstructable for any past date** from the history. |
 | SMS | Africa's Talking (sandbox), sent from an outbox after commit, retried on failure, with no personal details in the text. |
 
-**Live demo:** _add your Render URL here_ · **API:** Open311 GeoReport v2 at `/open311/v2/`
+**Live demo:** _add your Vercel URL here_ · **API:** Open311 GeoReport v2 at `/open311/v2/`
 
 ---
 
@@ -51,8 +51,8 @@ messages are logged and marked "skipped".
 docker compose run --rm web pytest
 ```
 
-That runs 131 tests against the compose PostGIS database. Run plain `pytest` outside Docker (with
-GDAL installed) and the suite starts its own PostGIS through **Testcontainers**.
+That runs 132 tests against the compose PostgreSQL database. Run plain `pytest` outside Docker and the
+suite starts its own PostgreSQL through **Testcontainers**.
 
 * `test_state_machine.py`: **property-based** (Hypothesis): random sequences of actions by six kinds
   of actor, with invariants checked after every step; plus the database trigger checked against
@@ -111,7 +111,7 @@ erDiagram
     USER }o--o| DEPARTMENT : "officer of"
     DEPARTMENT ||--|{ CATEGORY : handles
     CATEGORY ||--o{ SERVICE_REQUEST : "type of"
-    WARD ||--o{ SERVICE_REQUEST : "contains (PostGIS)"
+    WARD ||--o{ SERVICE_REQUEST : "contains (point-in-polygon)"
     SERVICE_REQUEST ||--o{ CASE_EVENT : "history (append-only)"
     SERVICE_REQUEST ||--o| PHOTO : has
     SERVICE_REQUEST ||--o{ FOLLOWER : "followed by"
@@ -120,7 +120,8 @@ erDiagram
     USER ||--o{ API_KEY : "Open311 keys"
 
     SERVICE_REQUEST {
-        point location "geography, SRID 4326"
+        float latitude
+        float longitude
         string status "enforced by trigger"
         datetime due_at "charter deadline, fixed at creation"
         datetime resolved_at
@@ -134,7 +135,7 @@ erDiagram
     }
     WARD {
         string code "IEBC ward code"
-        multipolygon geom
+        json boundary "GeoJSON polygon"
     }
 ```
 
@@ -185,19 +186,31 @@ The full reasoning is in [`docs/decisions.md`](docs/decisions.md). The main trad
   constituency map. A report near a ward border may land in the neighbouring ward's queue.
 * Replay locations are NYC's geography mapped onto Murang'a, so ward breakdowns of replay data are
   illustrative.
-* On Render's free tier, the escalation job only runs while the instance is awake.
+* On Vercel's free (Hobby) plan the escalation job runs once a day, not every 15 minutes.
 
 Security: [threat model (STRIDE)](docs/threat-model.md) · [OWASP ASVS L1 check](docs/asvs-l1.md).
 Accessibility: [WCAG 2.2 notes](docs/accessibility.md).
 
-## Deploy (Render)
+## Deploy (Vercel)
 
-1. Push this repository to GitHub.
-2. On [render.com](https://render.com): **New → Blueprint**, then choose the repository. `render.yaml`
-   creates a PostGIS-capable Postgres 16 database and the Docker web service.
-3. When asked, set `DEMO_PASSWORD` (pick one), `SITE_URL` (the service's `https://….onrender.com`
-   address) and, optionally, `AT_API_KEY`.
-4. The first deploy takes about 10 minutes; the replay fills in over the next few.
+Vercel runs the website; the database is a free Postgres from **Neon**, added through Vercel.
 
-Render's free Postgres expires after 30 days, and free web services sleep when idle (the first
-request after a sleep takes about a minute).
+1. On [vercel.com](https://vercel.com), sign in with GitHub. Choose **Add New → Project**, import
+   this repository, and click **Deploy**. (The first deploy shows an error page until step 3 is done.)
+2. In the project, open **Storage → Create Database → Neon (Postgres)**, then connect it to the
+   project. Vercel adds `DATABASE_URL` to the project's settings.
+3. Under **Settings → Environment Variables**, add `DJANGO_SECRET_KEY` (any long random text) and
+   `CRON_SECRET` (any random text). Optionally add `AT_API_KEY` for SMS.
+4. Copy the database's connection string (Storage → your database → **.env.local** tab →
+   `DATABASE_URL`), then, on your computer, with Docker running:
+
+   ```bash
+   sh scripts/publish_db.sh "paste-the-connection-string-here"
+   ```
+
+   That builds the wards, categories, demo accounts and replayed reports locally and copies them to
+   Neon. The demo accounts get the `DEMO_PASSWORD` from your local `.env`.
+5. **Deployments → Redeploy**. Open the `….vercel.app` address and sign in.
+
+To publish later code changes, push to GitHub (Vercel redeploys by itself). If a change adds
+migrations, run `publish_db.sh` again.

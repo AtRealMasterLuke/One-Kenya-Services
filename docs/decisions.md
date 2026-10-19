@@ -1,10 +1,13 @@
 # Decisions and trade-offs
 
-## Stack: Django + GeoDjango + PostGIS, server-rendered
+## Stack: Django + PostgreSQL + shapely, server-rendered
 
-* **PostGIS does the hard parts in the database.** Ward routing is `ST_Contains`. Duplicate
-  search is `ST_DWithin` on a geography column (true metres, not degrees). GeoDjango exposes both
-  without raw SQL.
+* **Map maths in plain Python.** The first version used GeoDjango and PostGIS. The brief requires
+  Vercel, whose Python runtime can't install GDAL (a system library GeoDjango needs), so ward
+  routing is now shapely point-in-polygon against the 35 ward shapes held in memory, and duplicate
+  search is a SQL bounding-box filter followed by an exact haversine distance in metres. Both give
+  the same results as the PostGIS version: same replay counts, same known-point results, and the
+  independent analytics check still matches exactly.
 * **Server-rendered HTML** keeps each page to a few kilobytes and working without JavaScript.
   That matters on 3G and on cheap Android phones. The only script is the location picker, and it
   only downloads the map library when someone asks for the map.
@@ -88,6 +91,10 @@ an officer. Failures are retried by `run_case_maintenance`, up to 5 attempts.
 
 ## Deployment
 
-Docker image, PostGIS, Render blueprint. The free tier has no cron, so `MAINTENANCE_LOOP=1`
-runs the 15-minute maintenance job inside the web container while it's awake. On a paid plan,
-use a Render cron job running `python manage.py run_case_maintenance` instead.
+Vercel for the app (Python serverless functions), Neon Postgres for the database. Serverless means
+no background processes, so the escalation/auto-close/SMS-retry job runs as a **Vercel Cron**
+calling `/cron/maintenance` (protected by `CRON_SECRET`), once a day on the free plan. Seeding
+(wards, demo accounts, the replay) runs on your machine and is copied to Neon with
+`scripts/publish_db.sh`, because replaying thousands of reports row by row over the internet would
+be very slow. Photos are capped at 4 MB because Vercel rejects request bodies over 4.5 MB.
+Docker remains the way to run everything locally.
