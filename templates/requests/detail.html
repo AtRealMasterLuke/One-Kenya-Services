@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}{{ req.reference }}{% endblock %}
+{% block content %}
+<p class="small"><a href="{% if user.is_county_staff %}{% url 'staff_queue' %}{% else %}{% url 'my_requests' %}{% endif %}">← Back</a></p>
+<div class="button-row spread">
+  <h1>{{ req.reference }}: {{ req.category.name }}</h1>
+  <div>
+    {% include "includes/status_badge.html" %}
+    {% if req.escalation_level %}<span class="badge badge-escalated">Escalated L{{ req.escalation_level }}</span>{% endif %}
+  </div>
+</div>
+
+<div class="grid grid-2">
+  <section class="card" aria-labelledby="facts-h">
+    <h2 id="facts-h" class="visually-hidden">Report details</h2>
+    <dl class="facts">
+      <dt>Ward</dt><dd>{{ req.ward.name }}, {{ req.ward.constituency }}{% if req.location_approximate %} <span class="help">Location is the ward only; the reporter didn't pin a spot.</span>{% endif %}</dd>
+      <dt>Handled by</dt><dd>{{ req.category.department.name }}</dd>
+      <dt>Reported</dt><dd>{{ req.created_at|date:"D j M Y, H:i" }}</dd>
+      <dt>Target</dt><dd>{{ req.due_at|date:"D j M Y, H:i" }} <span class="help">{{ req.category.target_label }}{% if req.category.sla_is_assumed %} (working assumption){% else %} (MUWASCO charter){% endif %}</span></dd>
+      {% if full %}
+        {% if req.landmark %}<dt>Landmark</dt><dd>{{ req.landmark }}</dd>{% endif %}
+        <dt>Coordinates</dt><dd><a href="https://www.openstreetmap.org/?mlat={{ req.location.y|floatformat:5 }}&amp;mlon={{ req.location.x|floatformat:5 }}#map=18/{{ req.location.y|floatformat:5 }}/{{ req.location.x|floatformat:5 }}" rel="noopener noreferrer">{{ req.location.y|floatformat:5 }}, {{ req.location.x|floatformat:5 }}</a></dd>
+        {% if user.is_county_staff %}<dt>Reported by</dt><dd>{{ req.citizen.full_name }}{% if req.source != "replay" %}, {{ req.citizen.phone }}{% endif %} <span class="help">via {{ req.get_source_display }}</span></dd>{% endif %}
+        <dt>Following</dt><dd>{{ req.followers.count }} other{{ req.followers.count|pluralize }}</dd>
+      {% endif %}
+      {% if req.merged_into %}<dt>Merged into</dt><dd>{% if full %}<a href="{% url 'request_detail' req.merged_into.pk %}">{{ req.merged_into.reference }}</a>{% else %}{{ req.merged_into.reference }}{% endif %}</dd>{% endif %}
+    </dl>
+    {% if full %}
+      <h3>Description</h3>
+      <p>{{ req.description|linebreaksbr }}</p>
+      {% if req.photo %}<img class="photo" src="{% url 'request_photo' req.pk %}" alt="Photo the reporter attached to {{ req.reference }}" width="{{ req.photo.width }}" height="{{ req.photo.height }}" loading="lazy">{% endif %}
+    {% else %}
+      <p class="muted">You're following this report. Only the person who made it and county officers can see its description and photo.</p>
+    {% endif %}
+  </section>
+
+  <section class="card" aria-labelledby="history-h">
+    <h2 id="history-h">History</h2>
+    <ol class="timeline">
+      {% for e in events %}
+      <li>
+        <strong>
+          {% if e.kind == "status" %}{% if not e.from_status %}Reported{% else %}{{ e.get_to_status_display|default:e.to_status }}{% endif %}
+          {% elif e.kind == "escalation" %}Escalated
+          {% elif e.kind == "merge" %}Duplicate merged in
+          {% else %}Someone else is following{% endif %}
+        </strong>
+        <span class="when">{{ e.created_at|date:"D j M Y, H:i" }}{% if full %} · {% if e.actor_role == "system" %}automatic{% elif e.actor_role == "owner" %}reporter{% else %}{{ e.actor_role }}{% endif %}{% endif %}</span>
+        {% if full and e.note %}<blockquote>{{ e.note }}</blockquote>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+</div>
+
+{% if full and actions %}
+<section class="card" aria-labelledby="actions-h">
+  <h2 id="actions-h">{% if req.status == "resolved" and not user.is_county_staff %}Is it fixed?{% else %}Update this report{% endif %}</h2>
+  <form method="post" action="{% url 'request_action' req.pk %}">
+    {% csrf_token %}
+    {{ note_form.note.as_field_group }}
+    <div class="button-row">
+      {% for a in actions %}
+        <button type="submit" name="to_status" value="{{ a.to }}" class="button{% if a.to == 'in_progress' and req.status == 'resolved' %} button-danger{% endif %}">{{ a.label }}</button>
+      {% endfor %}
+    </div>
+    {% if actions|length > 0 %}<p class="help">A note is required when resolving or reopening.</p>{% endif %}
+  </form>
+</section>
+{% endif %}
+
+{% if can_merge %}
+<section class="card" aria-labelledby="merge-h">
+  <h2 id="merge-h">Merge as a duplicate</h2>
+  {% if req.suspected_duplicate %}<p><span class="badge badge-flag">Possible duplicate</span> When this was reported, {{ req.suspected_duplicate.reference }} was already open nearby.</p>{% endif %}
+  {% if merge_candidates %}
+  <form method="post" action="{% url 'request_action' req.pk %}">
+    {% csrf_token %}
+    <input type="hidden" name="to_status" value="merged">
+    <fieldset>
+      <legend>Open {{ req.category.name|lower }} reports nearby</legend>
+      <ul class="list-plain">
+        {% for c in merge_candidates %}
+        <li class="checkbox"><input type="radio" name="merge_into" value="{{ c.pk }}" id="merge-{{ c.pk }}" {% if c.pk == req.suspected_duplicate_id %}checked{% endif %}>
+          <label for="merge-{{ c.pk }}"><a href="{% url 'request_detail' c.pk %}">{{ c.reference }}</a>, {{ c.distance.m|floatformat:0 }} m away, reported {{ c.created_at|date:"j M H:i" }}</label></li>
+        {% endfor %}
+      </ul>
+    </fieldset>
+    <div class="field">
+      <label for="merge-note">Why is it a duplicate?</label>
+      <textarea id="merge-note" name="note" rows="2" required></textarea>
+    </div>
+    <button type="submit" class="button button-secondary">Merge into selected report</button>
+  </form>
+  {% else %}
+  <p class="muted">No other open reports of this kind within 100 m.</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

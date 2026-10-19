@@ -1,0 +1,52 @@
+{
+  "_about": "How the NYC 311 sample (data/raw/nyc311_2025-03-01_to_2025-03-07.csv) is replayed into Murang'a. Implemented twice: by `manage.py replay_311` (through the real app, PostGIS and state machine) and independently by scripts/verify_analytics.py (pandas + shapely). The two must produce identical dashboard figures. Full prose in docs/replay.md.",
+  "dataset": {
+    "name": "NYC 311 Service Requests from 2010 to Present",
+    "url": "https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9",
+    "query": "created_date 2025-03-01T00:00 to 2025-03-08T00:00, complaint_type in the seven types below, latitude not null",
+    "fetched": "2026-10-19",
+    "licence": "NYC Open Data, public, no restrictions on use"
+  },
+  "timestamps": "created_date and closed_date are NYC local wall-clock times; they are read as Africa/Nairobi wall-clock times, so office-hours patterns line up with Murang'a working hours.",
+  "transform": {
+    "_about": "Linear map of the NYC bounding box onto Murang'a's bounding box (from the GADM ward extent). Keeps the spatial clustering of real complaints. Points that land outside every ward are dropped as outside_county, the same rule the live form applies.",
+    "from_bbox": [-74.2591, 40.4774, -73.7004, 40.9176],
+    "to_bbox": [36.706, -1.0894, 37.4211, -0.5608]
+  },
+  "status_map": {
+    "Open": "pending",
+    "Pending": "pending",
+    "Assigned": "in_progress",
+    "Started": "in_progress",
+    "In Progress": "in_progress",
+    "Closed": "closed"
+  },
+  "category_map": [
+    {"complaint_type": "Water System", "descriptor": "Leak (Use Comments) (WA2)", "category": "water_leak"},
+    {"complaint_type": "Water System", "descriptor": "Hydrant Running (WC3)", "category": "water_leak"},
+    {"complaint_type": "Water System", "descriptor": "Hydrant Leaking (WC1)", "category": "water_leak"},
+    {"complaint_type": "Water System", "descriptor": "Hydrant Running Full (WA4)", "category": "water_leak"},
+    {"complaint_type": "Water System", "descriptor": "Possible Water Main Break (Use Comments) (WA1)", "category": "pipe_burst"},
+    {"complaint_type": "Water System", "descriptor": "No Water (WNW)", "category": "no_water"},
+    {"complaint_type": "Water System", "descriptor": "LOW WATER PRESSURE - WLWP", "category": "no_water"},
+    {"complaint_type": "Sewer", "descriptor": "Sewer Backup (Use Comments) (SA)", "category": "sewer_blockage"},
+    {"complaint_type": "Sewer", "descriptor": "Catch Basin Clogged/Flooding (Use Comments) (SC)", "category": "sewer_blockage"},
+    {"complaint_type": "Sewer", "descriptor": "Manhole Overflow (Use Comments) (SA1)", "category": "sewer_blockage"},
+    {"complaint_type": "Street Light Condition", "descriptor": "*", "category": "streetlight"},
+    {"complaint_type": "Street Condition", "descriptor": "Pothole", "category": "road_damage"},
+    {"complaint_type": "Street Condition", "descriptor": "Cave-in", "category": "road_damage"},
+    {"complaint_type": "Street Condition", "descriptor": "Rough, Pitted or Cracked Roads", "category": "road_damage"},
+    {"complaint_type": "Street Condition", "descriptor": "Failed Street Repair", "category": "road_damage"},
+    {"complaint_type": "Missed Collection", "descriptor": "*", "category": "garbage_missed"},
+    {"complaint_type": "Dirty Condition", "descriptor": "*", "category": "illegal_dumping"},
+    {"complaint_type": "Illegal Dumping", "descriptor": "*", "category": "illegal_dumping"}
+  ],
+  "rules": [
+    "1. Look up (complaint_type, descriptor); an exact descriptor match wins over '*'. No match: skip as unmapped.",
+    "2. Map status with status_map. Unknown status: skip as unknown_status.",
+    "3. A closed row needs closed_date >= created_date; otherwise skip as bad_dates. closed_date on a non-closed row is ignored.",
+    "4. Transform latitude/longitude; if the point is in no ward, skip as outside_county.",
+    "5. History written: pending at created_date; in_progress at created_date if the mapped status is in_progress or closed; resolved and then closed at closed_date if closed.",
+    "6. due_at is computed by the app's own deadline rules from created_date and the category's target."
+  ]
+}

@@ -1,0 +1,9 @@
+Django==5.2.18
+psycopg[binary]==3.2.3
+dj-database-url==2.3.0
+gunicorn==23.0.0
+whitenoise==6.8.2
+django-axes==7.0.1
+holidays==0.62
+Pillow==11.0.0
+requests==2.32.3

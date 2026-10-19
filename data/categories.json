@@ -1,0 +1,102 @@
+{
+  "_about": "Departments and service categories. Deadlines marked assumed=false are quoted from the MUWASCO customer service charter as published at https://muwasco.co.ke/services.html (saved copy: data/raw/muwasco_services_page_2026-10-19.html). No published Murang'a County charter with response times for roads, lighting or solid waste could be found, so those deadlines are assumptions and say so. Categories were chosen from the complaint types that make up the replay dataset (data/raw/nyc311_2025-03-01_to_2025-03-07.csv); see docs/decisions.md.",
+  "departments": [
+    {
+      "code": "water",
+      "name": "Water & Sanitation (MUWASCO)",
+      "calendar": "muwasco"
+    },
+    {
+      "code": "roads",
+      "name": "Roads & Public Works",
+      "calendar": "county"
+    },
+    {
+      "code": "environment",
+      "name": "Environment & Solid Waste",
+      "calendar": "county"
+    }
+  ],
+  "categories": [
+    {
+      "code": "water_leak",
+      "name": "Water leak",
+      "description": "Water leaking from a pipe, meter or valve.",
+      "department": "water",
+      "sla_hours": 12,
+      "sla_basis": "working",
+      "assumed": false,
+      "sla_source": "MUWASCO charter: \"All water leakages shall be repaired within 12 working hours after reporting.\""
+    },
+    {
+      "code": "pipe_burst",
+      "name": "Burst water main",
+      "description": "A major pipe has burst; water is gushing or the road is flooding.",
+      "department": "water",
+      "sla_hours": 25,
+      "sla_basis": "clock",
+      "assumed": false,
+      "sla_source": "MUWASCO charter: \"The company shall repair major water pipes within 25 hours of reporting.\""
+    },
+    {
+      "code": "no_water",
+      "name": "No water or low pressure",
+      "description": "Taps are dry or water pressure is very low.",
+      "department": "water",
+      "sla_hours": 24,
+      "sla_basis": "working",
+      "assumed": false,
+      "sla_source": "MUWASCO charter: \"No water / low pressure resulting from blockages will be resolved within 24 working hours.\""
+    },
+    {
+      "code": "sewer_blockage",
+      "name": "Blocked or overflowing sewer",
+      "description": "A sewer line or manhole is blocked or overflowing.",
+      "department": "water",
+      "sla_hours": 12,
+      "sla_basis": "clock",
+      "assumed": false,
+      "sla_source": "MUWASCO charter: \"All sewer blockages shall be unclogged within 12 hours after reporting.\""
+    },
+    {
+      "code": "streetlight",
+      "name": "Streetlight not working",
+      "description": "A streetlight or floodlight (mulika mwizi) is off, flickering or damaged.",
+      "department": "roads",
+      "sla_hours": 45,
+      "sla_basis": "working",
+      "assumed": true,
+      "sla_source": "Assumed: 5 working days (45 working hours). No published county target found."
+    },
+    {
+      "code": "road_damage",
+      "name": "Pothole or damaged road",
+      "description": "Potholes, cave-ins or a badly damaged road surface.",
+      "department": "roads",
+      "sla_hours": 90,
+      "sla_basis": "working",
+      "assumed": true,
+      "sla_source": "Assumed: 10 working days (90 working hours). No published county target found."
+    },
+    {
+      "code": "garbage_missed",
+      "name": "Missed garbage collection",
+      "description": "Garbage was not collected on the scheduled day.",
+      "department": "environment",
+      "sla_hours": 48,
+      "sla_basis": "clock",
+      "assumed": true,
+      "sla_source": "Assumed: 48 hours. No published county target found."
+    },
+    {
+      "code": "illegal_dumping",
+      "name": "Illegal dumping or litter",
+      "description": "Rubbish dumped or piled up in a public place.",
+      "department": "environment",
+      "sla_hours": 45,
+      "sla_basis": "working",
+      "assumed": true,
+      "sla_source": "Assumed: 5 working days (45 working hours). No published county target found."
+    }
+  ]
+}

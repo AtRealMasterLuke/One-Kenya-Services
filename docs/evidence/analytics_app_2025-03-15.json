@@ -1,0 +1,584 @@
+{
+  "as_of": "2025-03-15T00:00:00+03:00",
+  "by_category": {
+    "garbage_missed": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 92,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.5416,
+      "median_backlog_age_hours": 249.58,
+      "median_hours_to_resolve": 44.46,
+      "open": 92,
+      "past_due_open": 92,
+      "resolved": 449,
+      "resolved_late": 201,
+      "total": 541
+    },
+    "illegal_dumping": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 94,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.0825,
+      "median_backlog_age_hours": 254.12,
+      "median_hours_to_resolve": 23.9,
+      "open": 94,
+      "past_due_open": 94,
+      "resolved": 1227,
+      "resolved_late": 15,
+      "total": 1321
+    },
+    "no_water": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 3,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1296,
+      "median_backlog_age_hours": 258.27,
+      "median_hours_to_resolve": 2.02,
+      "open": 3,
+      "past_due_open": 3,
+      "resolved": 51,
+      "resolved_late": 4,
+      "total": 54
+    },
+    "pipe_burst": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 6,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1827,
+      "median_backlog_age_hours": 277.64,
+      "median_hours_to_resolve": 0.23,
+      "open": 6,
+      "past_due_open": 6,
+      "resolved": 98,
+      "resolved_late": 13,
+      "total": 104
+    },
+    "road_damage": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 19,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.0016,
+      "median_backlog_age_hours": 204.75,
+      "median_hours_to_resolve": 23.51,
+      "open": 19,
+      "past_due_open": 1,
+      "resolved": 640,
+      "resolved_late": 0,
+      "total": 659
+    },
+    "sewer_blockage": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 10,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2737,
+      "median_backlog_age_hours": 223.42,
+      "median_hours_to_resolve": 2.37,
+      "open": 10,
+      "past_due_open": 10,
+      "resolved": 169,
+      "resolved_late": 39,
+      "total": 179
+    },
+    "streetlight": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 145,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.5175,
+      "median_backlog_age_hours": 223.53,
+      "median_hours_to_resolve": 70.17,
+      "open": 145,
+      "past_due_open": 145,
+      "resolved": 255,
+      "resolved_late": 62,
+      "total": 400
+    },
+    "water_leak": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 59,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2652,
+      "median_backlog_age_hours": 251.82,
+      "median_hours_to_resolve": 1.52,
+      "open": 59,
+      "past_due_open": 59,
+      "resolved": 337,
+      "resolved_late": 46,
+      "total": 396
+    }
+  },
+  "by_ward": {
+    "0517": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 2,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1636,
+      "median_backlog_age_hours": 229.1,
+      "median_hours_to_resolve": 29.21,
+      "open": 2,
+      "past_due_open": 2,
+      "resolved": 53,
+      "resolved_late": 7,
+      "total": 55
+    },
+    "0519": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 4,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2326,
+      "median_backlog_age_hours": 190.16,
+      "median_hours_to_resolve": 26.2,
+      "open": 4,
+      "past_due_open": 4,
+      "resolved": 39,
+      "resolved_late": 6,
+      "total": 43
+    },
+    "0522": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 6,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1429,
+      "median_backlog_age_hours": 218.18,
+      "median_hours_to_resolve": 20.3,
+      "open": 6,
+      "past_due_open": 5,
+      "resolved": 79,
+      "resolved_late": 7,
+      "total": 85
+    },
+    "0523": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 9,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1524,
+      "median_backlog_age_hours": 230.47,
+      "median_hours_to_resolve": 22.84,
+      "open": 9,
+      "past_due_open": 9,
+      "resolved": 201,
+      "resolved_late": 23,
+      "total": 210
+    },
+    "0524": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 25,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1374,
+      "median_backlog_age_hours": 261.75,
+      "median_hours_to_resolve": 24.05,
+      "open": 25,
+      "past_due_open": 23,
+      "resolved": 290,
+      "resolved_late": 20,
+      "total": 315
+    },
+    "0525": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 2,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1667,
+      "median_backlog_age_hours": 237.33,
+      "median_hours_to_resolve": 27.35,
+      "open": 2,
+      "past_due_open": 2,
+      "resolved": 34,
+      "resolved_late": 4,
+      "total": 36
+    },
+    "0527": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 57,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2209,
+      "median_backlog_age_hours": 223.55,
+      "median_hours_to_resolve": 28.06,
+      "open": 57,
+      "past_due_open": 55,
+      "resolved": 289,
+      "resolved_late": 21,
+      "total": 346
+    },
+    "0528": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 24,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2711,
+      "median_backlog_age_hours": 255.02,
+      "median_hours_to_resolve": 20.31,
+      "open": 24,
+      "past_due_open": 22,
+      "resolved": 144,
+      "resolved_late": 23,
+      "total": 168
+    },
+    "0529": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 59,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.3365,
+      "median_backlog_age_hours": 253.83,
+      "median_hours_to_resolve": 21.01,
+      "open": 59,
+      "past_due_open": 58,
+      "resolved": 150,
+      "resolved_late": 12,
+      "total": 209
+    },
+    "0530": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 0,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.0,
+      "median_backlog_age_hours": null,
+      "median_hours_to_resolve": 64.03,
+      "open": 0,
+      "past_due_open": 0,
+      "resolved": 4,
+      "resolved_late": 0,
+      "total": 4
+    },
+    "0533": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 15,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2,
+      "median_backlog_age_hours": 192.42,
+      "median_hours_to_resolve": 20.25,
+      "open": 15,
+      "past_due_open": 15,
+      "resolved": 105,
+      "resolved_late": 9,
+      "total": 120
+    },
+    "0534": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 14,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.4225,
+      "median_backlog_age_hours": 213.03,
+      "median_hours_to_resolve": 24.18,
+      "open": 14,
+      "past_due_open": 14,
+      "resolved": 57,
+      "resolved_late": 16,
+      "total": 71
+    },
+    "0535": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 32,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2107,
+      "median_backlog_age_hours": 236.56,
+      "median_hours_to_resolve": 22.03,
+      "open": 32,
+      "past_due_open": 30,
+      "resolved": 345,
+      "resolved_late": 49,
+      "total": 377
+    },
+    "0536": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 40,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2732,
+      "median_backlog_age_hours": 245.81,
+      "median_hours_to_resolve": 22.23,
+      "open": 40,
+      "past_due_open": 39,
+      "resolved": 155,
+      "resolved_late": 14,
+      "total": 195
+    },
+    "0537": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 41,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2285,
+      "median_backlog_age_hours": 253.54,
+      "median_hours_to_resolve": 27.0,
+      "open": 41,
+      "past_due_open": 40,
+      "resolved": 262,
+      "resolved_late": 29,
+      "total": 303
+    },
+    "0538": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 21,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1674,
+      "median_backlog_age_hours": 252.67,
+      "median_hours_to_resolve": 26.45,
+      "open": 21,
+      "past_due_open": 19,
+      "resolved": 220,
+      "resolved_late": 21,
+      "total": 241
+    },
+    "0539": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 10,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.3462,
+      "median_backlog_age_hours": 212.18,
+      "median_hours_to_resolve": 51.32,
+      "open": 10,
+      "past_due_open": 10,
+      "resolved": 68,
+      "resolved_late": 17,
+      "total": 78
+    },
+    "0540": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 9,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2483,
+      "median_backlog_age_hours": 222.1,
+      "median_hours_to_resolve": 24.14,
+      "open": 9,
+      "past_due_open": 9,
+      "resolved": 140,
+      "resolved_late": 28,
+      "total": 149
+    },
+    "0541": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 14,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1833,
+      "median_backlog_age_hours": 205.57,
+      "median_hours_to_resolve": 24.65,
+      "open": 14,
+      "past_due_open": 13,
+      "resolved": 167,
+      "resolved_late": 20,
+      "total": 181
+    },
+    "0542": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 32,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2097,
+      "median_backlog_age_hours": 253.17,
+      "median_hours_to_resolve": 23.14,
+      "open": 32,
+      "past_due_open": 29,
+      "resolved": 219,
+      "resolved_late": 23,
+      "total": 251
+    },
+    "0543": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 2,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.1667,
+      "median_backlog_age_hours": 285.92,
+      "median_hours_to_resolve": 37.52,
+      "open": 2,
+      "past_due_open": 2,
+      "resolved": 58,
+      "resolved_late": 8,
+      "total": 60
+    },
+    "0545": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 1,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2222,
+      "median_backlog_age_hours": 227.88,
+      "median_hours_to_resolve": 23.71,
+      "open": 1,
+      "past_due_open": 1,
+      "resolved": 8,
+      "resolved_late": 1,
+      "total": 9
+    },
+    "0546": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 3,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.3571,
+      "median_backlog_age_hours": 255.92,
+      "median_hours_to_resolve": 4.17,
+      "open": 3,
+      "past_due_open": 3,
+      "resolved": 11,
+      "resolved_late": 2,
+      "total": 14
+    },
+    "0547": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 0,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.0938,
+      "median_backlog_age_hours": null,
+      "median_hours_to_resolve": 27.57,
+      "open": 0,
+      "past_due_open": 0,
+      "resolved": 32,
+      "resolved_late": 3,
+      "total": 32
+    },
+    "0548": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 1,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.0741,
+      "median_backlog_age_hours": 198.9,
+      "median_hours_to_resolve": 21.51,
+      "open": 1,
+      "past_due_open": 1,
+      "resolved": 26,
+      "resolved_late": 1,
+      "total": 27
+    },
+    "0549": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 3,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.2687,
+      "median_backlog_age_hours": 206.4,
+      "median_hours_to_resolve": 26.14,
+      "open": 3,
+      "past_due_open": 3,
+      "resolved": 64,
+      "resolved_late": 15,
+      "total": 67
+    },
+    "0550": {
+      "backlog_age_bands": {
+        "2_to_7_days": 0,
+        "7_to_30_days": 2,
+        "over_30_days": 0,
+        "under_2_days": 0
+      },
+      "breach_rate": 0.375,
+      "median_backlog_age_hours": 210.25,
+      "median_hours_to_resolve": 16.47,
+      "open": 2,
+      "past_due_open": 2,
+      "resolved": 6,
+      "resolved_late": 1,
+      "total": 8
+    }
+  },
+  "overall": {
+    "backlog_age_bands": {
+      "2_to_7_days": 0,
+      "7_to_30_days": 428,
+      "over_30_days": 0,
+      "under_2_days": 0
+    },
+    "breach_rate": 0.2173,
+    "median_backlog_age_hours": 244.73,
+    "median_hours_to_resolve": 23.89,
+    "open": 428,
+    "past_due_open": 410,
+    "resolved": 3226,
+    "resolved_late": 380,
+    "total": 3654
+  },
+  "source": "replay"
+}

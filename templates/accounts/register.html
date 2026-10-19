@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>Create your account</h1>
+  <p class="lead">You need an account so you can follow your reports and so officers can reach you.</p>
+  <form method="post" class="card" novalidate>
+    {% csrf_token %}
+    {% include "includes/form_errors.html" %}
+    {% for field in form %}{{ field.as_field_group }}{% endfor %}
+    <button type="submit" class="button">Create account</button>
+  </form>
+  <p>Already registered? <a href="{% url 'login' %}">Sign in</a>.</p>
+  <p class="small muted">We use your number only to send updates about your reports. Under the Data Protection Act, 2019 you can ask the county to correct or delete your details.</p>
+</div>
+{% endblock %}

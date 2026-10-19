@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Report a problem: what and where{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'vendor/leaflet/leaflet.css' %}">{% endblock %}
+{% block content %}
+<ol class="steps" aria-label="Progress">
+  <li class="current" aria-current="step">1. What and where</li>
+  <li>2. Details</li>
+  <li>3. Sent</li>
+</ol>
+<h1>What is the problem, and where?</h1>
+
+<form method="post" novalidate>
+  {% csrf_token %}
+  {% include "includes/form_errors.html" %}
+
+  <fieldset class="card">
+    <legend>What is the problem?</legend>
+    {% if form.category.errors %}<ul class="errorlist">{% for e in form.category.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+    <ul class="choice-list">
+      {% for c in categories %}
+      <li class="choice">
+        <input type="radio" name="category" value="{{ c.pk }}" id="cat-{{ c.pk }}" {% if form.category.value|stringformat:"s" == c.pk|stringformat:"s" %}checked{% endif %} required>
+        <label for="cat-{{ c.pk }}">
+          <span class="choice-title">{{ c.name }}</span>
+          <span class="choice-meta">{{ c.description }} Target: {{ c.target_label }}.</span>
+        </label>
+      </li>
+      {% endfor %}
+    </ul>
+  </fieldset>
+
+  <fieldset class="card" aria-describedby="where-help">
+    <legend>Where is it?</legend>
+    <p id="where-help" class="help">Stand near the problem and use your location, or tap the map. If you can't use either, choose the ward below.</p>
+    {{ form.latitude }}{{ form.longitude }}
+    <div class="button-row">
+      <button type="button" class="button button-secondary" id="use-location" hidden>Use my current location</button>
+      <button type="button" class="button button-secondary" id="show-map" hidden>Choose on a map</button>
+    </div>
+    <p class="location-status" id="location-status" role="status" aria-live="polite"></p>
+    <div id="map" class="map" hidden aria-label="Map. Tap to place the pin where the problem is." role="application"></div>
+    <div class="or-divider">or</div>
+    {{ form.ward.as_field_group }}
+  </fieldset>
+
+  <button type="submit" class="button">Continue</button>
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/locate.js' %}" data-leaflet-js="{% static 'vendor/leaflet/leaflet.js' %}" defer></script>
+{% endblock %}

@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: kenyamoja
+      POSTGRES_USER: kenyamoja
+      POSTGRES_PASSWORD: kenyamoja
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kenyamoja -d kenyamoja"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  web:
+    build:
+      context: .
+      args:
+        DEV: "1"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: postgis://kenyamoja:kenyamoja@db:5432/kenyamoja
+      DJANGO_DEBUG: "1"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,web"
+      SEED_DEMO: "1"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Production settings (DEBUG off, hashed+compressed static, no code mount) for the
+  # accessibility, Lighthouse and ZAP scans:  docker compose --profile audit up -d web-prod
+  web-prod:
+    profiles: ["audit"]
+    build: .
+    environment:
+      DATABASE_URL: postgis://kenyamoja:kenyamoja@db:5432/kenyamoja
+      DJANGO_SECRET_KEY: audit-only-not-secret
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,web-prod"
+      DJANGO_SSL_REDIRECT: "0"
+      DJANGO_SECURE_COOKIES: "0" # scans run over plain HTTP inside the compose network
+      SEED_DEMO: "1"
+    ports:
+      - "8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

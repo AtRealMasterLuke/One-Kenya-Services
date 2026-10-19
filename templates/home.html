@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Report a problem in your ward{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Report a problem in your ward</h1>
+  <p class="lead">Tell Murang'a County about a broken streetlight, a water leak, a pothole or missed garbage collection. Your report goes straight to the department responsible, and we text you when its status changes.</p>
+  <div class="hero-actions">
+    {% if user.is_authenticated %}
+      <a class="button" href="{% url 'request_new' %}">Report a problem</a>
+      <a class="button button-secondary" href="{% url 'my_requests' %}">Track my reports</a>
+    {% else %}
+      <a class="button" href="{% url 'register' %}">Register to report</a>
+      <a class="button button-secondary" href="{% url 'login' %}">Sign in</a>
+    {% endif %}
+  </div>
+</section>
+
+<section aria-labelledby="how">
+  <h2 id="how">What happens after you report</h2>
+  <ol class="steps" aria-label="Report stages">
+    <li class="done">1. Pending</li>
+    <li class="done">2. In progress</li>
+    <li class="done">3. Resolved</li>
+    <li class="done">4. You confirm it's fixed</li>
+  </ol>
+  <p>If it isn't really fixed, you can reopen it. If nobody responds after a report is marked resolved, it closes after 7 days.</p>
+</section>
+
+<section aria-labelledby="targets">
+  <h2 id="targets">What you can report, and how fast we aim to fix it</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-labelledby="targets">
+    <table>
+      <thead><tr><th scope="col">Problem</th><th scope="col">Handled by</th><th scope="col">Target</th></tr></thead>
+      <tbody>
+      {% for c in categories %}
+        <tr>
+          <th scope="row">{{ c.name }}<span class="help">{{ c.description }}</span></th>
+          <td>{{ c.department.name }}</td>
+          <td>{{ c.target_label }}{% if c.sla_is_assumed %}<span class="help">Working assumption: no published county target</span>{% else %}<span class="help">From the MUWASCO service charter</span>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="small muted">Working hours: MUWASCO Mon–Thu 8am–5pm, Fri 8am–4pm, Sat 8am–1pm. County offices Mon–Fri 8am–5pm. Public holidays are excluded.</p>
+</section>
+{% endblock %}

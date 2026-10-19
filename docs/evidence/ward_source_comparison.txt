@@ -1,0 +1,5 @@
+source                             wards  area_km2  A:area-in-own-constituency  B:gazetteer-agree  namesake
+GADM 4.1                              35      2543  88.7%                        442/510 (86.7%)    8/9   (covers 98.4% of county)
+American Red Cross 2016 (HDX)         35      2575  85.1%                        460/518 (88.8%)    8/9   (covers 99.0% of county)
+IEBC 2012 (HDX kenya-elections)       35      2555  92.4%                        467/516 (90.5%)    8/9   (covers 99.4% of county)
+FAO 2016 (HDX)                        26      1934  n/a (no constituency field)  n/a (no constituency field)  6/7   (covers 70.6% of county)

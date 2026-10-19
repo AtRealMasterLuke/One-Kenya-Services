@@ -1,0 +1,10 @@
+place,geonames_id,latitude,longitude,expected_ward,expected_ward_code,expected_constituency,observed_discrepancy
+Rwathia,180936,-0.65613,36.9101,Rwathia,0518,Kangema,
+Kiru,191383,-0.62072,36.96197,Kiru,0520,Mathioya,
+Kamacharia,194902,-0.60164,36.98954,Kamacharia,0521,Mathioya,
+Murarandia,185576,-0.72671,36.92363,Murarandia,0526,Kiharu,
+Muruka,185512,-0.93129,37.06203,Muruka,0540,Kandara,
+Kagunduini,195498,-0.85434,37.0415,Kagundu-ini,0541,Kandara,"falls in Kahumbu, 1059 m outside Kagundu-ini"
+Gaichanjiru,197916,-0.89013,37.05934,Gaichanjiru,0542,Kandara,
+Ithanga,11835366,-0.99504,37.33952,Ithanga,0545,Gatanga,
+Kihumbuini,192227,-0.92751,36.98803,Kihumbu-ini,0548,Gatanga,

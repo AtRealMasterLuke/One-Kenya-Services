@@ -1,0 +1,1 @@
+<span class="badge badge-{{ req.status }}">{{ req.get_status_display }}</span>{% if req.is_open and req.due_at < now %} <span class="badge badge-overdue">Overdue</span>{% endif %}

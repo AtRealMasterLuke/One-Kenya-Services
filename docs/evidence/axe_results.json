@@ -1,0 +1,247 @@
+{
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "pages_checked": 26,
+  "violations": 0,
+  "results": [
+    {
+      "viewport": "phone",
+      "user": "anonymous",
+      "path": "/",
+      "landed_on": "/",
+      "title": "Report a problem in your ward \u00b7 Murang'a County Services",
+      "passes": 23,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "anonymous",
+      "path": "/accounts/login/",
+      "landed_on": "/accounts/login/",
+      "title": "Sign in \u00b7 Murang'a County Services",
+      "passes": 23,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "anonymous",
+      "path": "/accounts/register/",
+      "landed_on": "/accounts/register/",
+      "title": "Register \u00b7 Murang'a County Services",
+      "passes": 24,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000001",
+      "path": "/requests/",
+      "landed_on": "/requests/",
+      "title": "My reports \u00b7 Murang'a County Services",
+      "passes": 20,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000001",
+      "path": "/requests/new/",
+      "landed_on": "/requests/new/",
+      "title": "Report a problem: what and where \u00b7 Murang'a County Services",
+      "passes": 26,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000001",
+      "path": "/account/api-keys/",
+      "landed_on": "/account/api-keys/",
+      "title": "API keys \u00b7 Murang'a County Services",
+      "passes": 28,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000001",
+      "path": "/requests/3659/",
+      "landed_on": "/requests/3659/",
+      "title": "MUR-003659 \u00b7 Murang'a County Services",
+      "passes": 22,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000010",
+      "path": "/staff/",
+      "landed_on": "/staff/",
+      "title": "Case queue \u00b7 Murang'a County Services",
+      "passes": 29,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000010",
+      "path": "/staff/?status=open&overdue=1",
+      "landed_on": "/staff/?status=open&overdue=1",
+      "title": "Case queue \u00b7 Murang'a County Services",
+      "passes": 29,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000010",
+      "path": "/requests/3325/",
+      "landed_on": "/requests/3325/",
+      "title": "MUR-003325 \u00b7 Murang'a County Services",
+      "passes": 24,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000099",
+      "path": "/staff/",
+      "landed_on": "/staff/",
+      "title": "Case queue \u00b7 Murang'a County Services",
+      "passes": 29,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000099",
+      "path": "/staff/analytics/",
+      "landed_on": "/staff/analytics/",
+      "title": "Analytics \u00b7 Murang'a County Services",
+      "passes": 30,
+      "violations": []
+    },
+    {
+      "viewport": "phone",
+      "user": "+254700000099",
+      "path": "/staff/analytics/?as_of=2025-03-15T00:00&source=replay",
+      "landed_on": "/staff/analytics/?as_of=2025-03-15T00:00&source=replay",
+      "title": "Analytics \u00b7 Murang'a County Services",
+      "passes": 30,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "anonymous",
+      "path": "/",
+      "landed_on": "/",
+      "title": "Report a problem in your ward \u00b7 Murang'a County Services",
+      "passes": 23,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "anonymous",
+      "path": "/accounts/login/",
+      "landed_on": "/accounts/login/",
+      "title": "Sign in \u00b7 Murang'a County Services",
+      "passes": 23,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "anonymous",
+      "path": "/accounts/register/",
+      "landed_on": "/accounts/register/",
+      "title": "Register \u00b7 Murang'a County Services",
+      "passes": 24,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000001",
+      "path": "/requests/",
+      "landed_on": "/requests/",
+      "title": "My reports \u00b7 Murang'a County Services",
+      "passes": 20,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000001",
+      "path": "/requests/new/",
+      "landed_on": "/requests/new/",
+      "title": "Report a problem: what and where \u00b7 Murang'a County Services",
+      "passes": 26,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000001",
+      "path": "/account/api-keys/",
+      "landed_on": "/account/api-keys/",
+      "title": "API keys \u00b7 Murang'a County Services",
+      "passes": 27,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000001",
+      "path": "/requests/3659/",
+      "landed_on": "/requests/3659/",
+      "title": "MUR-003659 \u00b7 Murang'a County Services",
+      "passes": 22,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000010",
+      "path": "/staff/",
+      "landed_on": "/staff/",
+      "title": "Case queue \u00b7 Murang'a County Services",
+      "passes": 28,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000010",
+      "path": "/staff/?status=open&overdue=1",
+      "landed_on": "/staff/?status=open&overdue=1",
+      "title": "Case queue \u00b7 Murang'a County Services",
+      "passes": 28,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000010",
+      "path": "/requests/3325/",
+      "landed_on": "/requests/3325/",
+      "title": "MUR-003325 \u00b7 Murang'a County Services",
+      "passes": 24,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000099",
+      "path": "/staff/",
+      "landed_on": "/staff/",
+      "title": "Case queue \u00b7 Murang'a County Services",
+      "passes": 28,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000099",
+      "path": "/staff/analytics/",
+      "landed_on": "/staff/analytics/",
+      "title": "Analytics \u00b7 Murang'a County Services",
+      "passes": 29,
+      "violations": []
+    },
+    {
+      "viewport": "desktop",
+      "user": "+254700000099",
+      "path": "/staff/analytics/?as_of=2025-03-15T00:00&source=replay",
+      "landed_on": "/staff/analytics/?as_of=2025-03-15T00:00&source=replay",
+      "title": "Analytics \u00b7 Murang'a County Services",
+      "passes": 29,
+      "violations": []
+    }
+  ]
+}

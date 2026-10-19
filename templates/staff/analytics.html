@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load analytics_tags %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<h1>Analytics</h1>
+<p class="muted">Rebuilt from the case history as it stood at the moment you choose, so a past date shows exactly what the dashboard showed then. <a href="?{{ request.GET.urlencode }}&amp;format=json">Download as JSON</a>. Every figure is defined in <code>docs/metrics.md</code>.</p>
+
+<form method="get" class="filters card" aria-label="Choose snapshot">
+  <div class="field">
+    <label for="as-of">As of</label>
+    <input type="datetime-local" id="as-of" name="as_of" value="{{ as_of|date:'Y-m-d\TH:i' }}">
+  </div>
+  <div class="field">
+    <label for="source">Reports</label>
+    <select id="source" name="source">
+      <option value="">All sources</option>
+      {% for value, label in sources %}<option value="{{ value }}" {% if source == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="field"><button type="submit" class="button">Show</button></div>
+  <div class="field"><a href="?as_of=2025-03-15T00:00&amp;source=replay">Replay snapshot (15 Mar 2025)</a></div>
+</form>
+
+{% with o=result.overall %}
+<section aria-labelledby="overall-h">
+  <h2 id="overall-h">All of Murang'a</h2>
+  <div class="grid grid-4">
+    <div class="stat"><div class="stat-value">{{ o.open }}</div><div class="stat-label">Open cases</div></div>
+    <div class="stat"><div class="stat-value">{{ o.resolved }}</div><div class="stat-label">Resolved or closed</div></div>
+    <div class="stat"><div class="stat-value">{{ o.median_hours_to_resolve|hours }}</div><div class="stat-label">Median time to resolve</div></div>
+    <div class="stat"><div class="stat-value">{{ o.breach_rate|percent }}</div><div class="stat-label">Missed their deadline<span class="help">{{ o.resolved_late }} resolved late + {{ o.past_due_open }} still open past due</span></div></div>
+  </div>
+  <h3>Open cases by age</h3>
+  <div class="grid grid-4">
+    {% for band, count in o.backlog_age_bands.items %}
+    <div class="stat"><div class="stat-value">{{ count }}</div><div class="stat-label">{{ band|band_label }}</div></div>
+    {% endfor %}
+  </div>
+  <p class="small muted">Median age of open cases: {{ o.median_backlog_age_hours|hours }}.</p>
+</section>
+{% endwith %}
+
+{% for title, rows in tables %}
+<section aria-labelledby="t-{{ forloop.counter }}">
+  <h2 id="t-{{ forloop.counter }}">{{ title }}</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-labelledby="t-{{ forloop.counter }}">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{% if forloop.first %}Problem{% else %}Ward{% endif %}</th>
+          <th scope="col" class="num">Open</th>
+          <th scope="col" class="num">Resolved</th>
+          <th scope="col" class="num">Median time to resolve</th>
+          <th scope="col">Missed deadline</th>
+          <th scope="col" class="num">Median backlog age</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for name, m in rows %}
+        <tr>
+          <th scope="row">{{ name }}</th>
+          <td class="num">{{ m.open }}</td>
+          <td class="num">{{ m.resolved }}</td>
+          <td class="num">{{ m.median_hours_to_resolve|hours }}</td>
+          <td>{{ m.breach_rate|percent }}<span class="bar bar-danger" aria-hidden="true"><span class="w-{{ m.breach_rate|pct_bucket }}"></span></span></td>
+          <td class="num">{{ m.median_backlog_age_hours|hours }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6">No cases at this date.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

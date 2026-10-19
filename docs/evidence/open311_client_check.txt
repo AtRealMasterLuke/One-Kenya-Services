@@ -1,0 +1,9 @@
+[xml] services listed              water_leak, pipe_burst, no_water, sewer_blockage, streetlight, road_damage, garbage_missed, illegal_dumping
+[xml] posted, got id               3658 (Reference MUR-003658. Target: 25 hours.)
+[xml] read back                    status=open ward=Township ward, Kiharu due=2026-10-20T16:33:19+03:00
+[xml] found in open list           True
+[json] services listed             skipped (client hardcodes services.xml; see open311/open311.py:46)
+[json] posted, got id              3659 (Reference MUR-003659. Target: 25 hours.)
+[json] read back                   status=open ward=Township ward, Kiharu due=2026-10-20T16:33:19+03:00
+[json] found in open list          skipped (client assumes XML shape; see open311/open311.py:62)
+{"steps": [["[xml] services listed", "water_leak, pipe_burst, no_water, sewer_blockage, streetlight, road_damage, garbage_missed, illegal_dumping"], ["[xml] posted, got id", "3658 (Reference MUR-003658. Target: 25 hours.)"], ["[xml] read back", "status=open ward=Township ward, Kiharu due=2026-10-20T16:33:19+03:00"], ["[xml] found in open list", true], ["[json] services listed", "skipped (client hardcodes services.xml; see open311/open311.py:46)"], ["[json] posted, got id", "3659 (Reference MUR-003659. Target: 25 hours.)"], ["[json] read back", "status=open ward=Township ward, Kiharu due=2026-10-20T16:33:19+03:00"], ["[json] found in open list", "skipped (client assumes XML shape; see open311/open311.py:62)"]], "ok": true}

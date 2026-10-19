@@ -1,0 +1,36 @@
+# Render blueprint: https://render.com/docs/blueprint-spec
+# New > Blueprint > pick this repository. Render creates the database and the web service.
+services:
+  - type: web
+    name: muranga-service-requests
+    runtime: docker
+    plan: free
+    region: frankfurt
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: muranga-db
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEMO_PASSWORD
+        sync: false # you choose it; give it to reviewers in the submission notes
+      - key: SEED_DEMO
+        value: "1"
+      - key: MAINTENANCE_LOOP
+        value: "1" # escalation / auto-close / SMS retry every 15 min while the instance is awake
+      - key: WEB_CONCURRENCY
+        value: "1" # the free instance has 512 MB
+      - key: AT_USERNAME
+        value: sandbox
+      - key: AT_API_KEY
+        sync: false
+      - key: SITE_URL
+        sync: false # e.g. https://muranga-service-requests.onrender.com
+
+databases:
+  - name: muranga-db
+    plan: free
+    region: frankfurt
+    postgresMajorVersion: "16"

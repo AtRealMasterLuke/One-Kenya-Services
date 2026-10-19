@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Has this already been reported?{% endblock %}
+{% block content %}
+<ol class="steps" aria-label="Progress">
+  <li class="done">1. What and where</li>
+  <li class="current" aria-current="step">2. Already reported?</li>
+  <li>3. Details</li>
+</ol>
+<h1>Is it one of these?</h1>
+<p class="lead">{{ duplicates|length }} open {{ category.name|lower }} report{{ duplicates|length|pluralize }} {{ duplicates|length|pluralize:"is,are" }} already within {{ radius }} metres of the spot you chose. If yours is the same problem, follow it: you'll get its updates, and officers can see how many people it affects.</p>
+
+<ul class="list-plain card">
+  {% for d in duplicates %}
+  <li class="request-item">
+    <div>
+      <strong>{{ d.reference }}: {{ d.category.name }}</strong>
+      <span class="help">{{ d.distance.m|floatformat:0 }} m away · reported {{ d.created_at|timesince }} ago · {{ d.get_status_display }}{% if d.landmark %} · near {{ d.landmark }}{% endif %}</span>
+    </div>
+    <form method="post" action="{% url 'request_follow' d.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="button">Same problem: follow {{ d.reference }}</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="button-row">
+  <a class="button button-secondary" href="{% url 'request_new_details' %}">It's a different problem: continue</a>
+  <a href="{% url 'request_new' %}">Change the location</a>
+</div>
+{% endblock %}

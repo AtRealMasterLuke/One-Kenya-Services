@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}API keys{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>Open311 API keys</h1>
+  <p>An Open311 app can file reports in your name using a key. Reports it files appear under "My reports". Endpoint: <code>{{ request.scheme }}://{{ request.get_host }}/open311/v2/</code></p>
+  {% if new_key %}
+  <div class="card" role="status">
+    <h2>Your new key</h2>
+    <p>Copy it now. For your security it won't be shown again.</p>
+    <code class="key">{{ new_key }}</code>
+  </div>
+  {% endif %}
+  <form method="post" class="card">
+    {% csrf_token %}
+    <div class="field">
+      <label for="key-name">Name this key</label>
+      <input type="text" id="key-name" name="name" maxlength="60" placeholder="e.g. My phone app">
+    </div>
+    <button type="submit" class="button">Create key</button>
+  </form>
+  {% if keys %}
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Your API keys">
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Starts with</th><th scope="col">Last used</th><th scope="col"><span class="visually-hidden">Action</span></th></tr></thead>
+      <tbody>
+      {% for k in keys %}
+        <tr>
+          <td>{{ k.name }}</td><td><code>{{ k.prefix }}…</code></td><td>{{ k.last_used_at|date:"j M Y H:i"|default:"Never" }}</td>
+          <td>{% if k.revoked_at %}Revoked{% else %}<form method="post">{% csrf_token %}<button class="button button-danger" name="revoke" value="{{ k.pk }}">Revoke</button></form>{% endif %}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

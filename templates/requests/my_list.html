@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My reports{% endblock %}
+{% block content %}
+<div class="button-row spread">
+  <h1>My reports</h1>
+  <a class="button" href="{% url 'request_new' %}">Report a problem</a>
+</div>
+{% if requests %}
+<ul class="list-plain card">
+  {% for req in requests %}
+  <li class="request-item">
+    <div>
+      <a href="{% url 'request_detail' req.pk %}"><strong>{{ req.reference }}: {{ req.category.name }}</strong></a>
+      <span class="help">{{ req.ward.name }} ward · reported {{ req.created_at|date:"j M Y, H:i" }}{% if req.citizen_id != user.pk %} · you are following this report{% endif %}</span>
+    </div>
+    {% include "includes/status_badge.html" %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="card"><p>You haven't reported anything yet.</p></div>
+{% endif %}
+<p class="small"><a href="{% url 'api_keys' %}">Use an Open311 app to report? Manage API keys</a></p>
+{% endblock %}

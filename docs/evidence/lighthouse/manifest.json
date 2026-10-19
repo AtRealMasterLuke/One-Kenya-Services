@@ -1,0 +1,62 @@
+[
+  {
+    "url": "http://web-prod:8000/accounts/register/",
+    "isRepresentativeRun": true,
+    "htmlPath": "/w/docs/evidence/lighthouse/web_prod-_accounts_register_-2026_10_19_12_58_21.report.html",
+    "jsonPath": "/w/docs/evidence/lighthouse/web_prod-_accounts_register_-2026_10_19_12_58_21.report.json",
+    "summary": {
+      "performance": 0.98,
+      "accessibility": 1,
+      "best-practices": 0.76,
+      "seo": 1
+    }
+  },
+  {
+    "url": "http://web-prod:8000/accounts/login/",
+    "isRepresentativeRun": true,
+    "htmlPath": "/w/docs/evidence/lighthouse/web_prod-_accounts_login_-2026_10_19_12_58_32.report.html",
+    "jsonPath": "/w/docs/evidence/lighthouse/web_prod-_accounts_login_-2026_10_19_12_58_32.report.json",
+    "summary": {
+      "performance": 0.98,
+      "accessibility": 1,
+      "best-practices": 0.76,
+      "seo": 1
+    }
+  },
+  {
+    "url": "http://web-prod:8000/",
+    "isRepresentativeRun": true,
+    "htmlPath": "/w/docs/evidence/lighthouse/web_prod-_-2026_10_19_12_58_43.report.html",
+    "jsonPath": "/w/docs/evidence/lighthouse/web_prod-_-2026_10_19_12_58_43.report.json",
+    "summary": {
+      "performance": 0.98,
+      "accessibility": 1,
+      "best-practices": 0.76,
+      "seo": 1
+    }
+  },
+  {
+    "url": "http://web-prod:8000/requests/new/",
+    "isRepresentativeRun": true,
+    "htmlPath": "/w/docs/evidence/lighthouse/web_prod-_requests_new_-2026_10_19_12_58_54.report.html",
+    "jsonPath": "/w/docs/evidence/lighthouse/web_prod-_requests_new_-2026_10_19_12_58_54.report.json",
+    "summary": {
+      "performance": 0.95,
+      "accessibility": 1,
+      "best-practices": 0.76,
+      "seo": 1
+    }
+  },
+  {
+    "url": "http://web-prod:8000/requests/",
+    "isRepresentativeRun": true,
+    "htmlPath": "/w/docs/evidence/lighthouse/web_prod-_requests_-2026_10_19_12_59_05.report.html",
+    "jsonPath": "/w/docs/evidence/lighthouse/web_prod-_requests_-2026_10_19_12_59_05.report.json",
+    "summary": {
+      "performance": 0.97,
+      "accessibility": 1,
+      "best-practices": 0.76,
+      "seo": 1
+    }
+  }
+]

@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+db.sqlite3
+KenyaMojaEnv/
+staticfiles/
+.pytest_cache/
+.hypothesis/
+# Ward boundaries are downloaded by `manage.py load_wards` (redistribution terms unclear).
+data/boundaries/muranga_wards_*.geojson
+docs/evidence/raw/
+data/tmp_downloads/
+.lighthouseci/

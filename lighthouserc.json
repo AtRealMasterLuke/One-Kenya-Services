@@ -1,0 +1,25 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 1,
+      "settings": {
+        "formFactor": "mobile",
+        "screenEmulation": { "mobile": true, "width": 360, "height": 740, "deviceScaleFactor": 2, "disabled": false },
+        "throttlingMethod": "simulate",
+        "throttling": { "rttMs": 400, "throughputKbps": 400, "cpuSlowdownMultiplier": 4 },
+        "chromeFlags": "--no-sandbox --headless=new"
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.9 }],
+        "categories:accessibility": ["error", { "minScore": 1 }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }],
+        "total-byte-weight": ["error", { "maxNumericValue": 153600 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 3000 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 4000 }]
+      }
+    },
+    "upload": { "target": "filesystem", "outputDir": "docs/evidence/lighthouse" }
+  }
+}

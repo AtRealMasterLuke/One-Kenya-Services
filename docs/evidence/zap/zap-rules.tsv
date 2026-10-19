@@ -1,0 +1,5 @@
+90004	IGNORE	(Cross-Origin-Embedder-Policy: require-corp would block OpenStreetMap map tiles; no feature needs cross-origin isolation. See config/middleware.py.)
+10049	IGNORE	(Informational: cacheability of responses. Sign-in pages are no-store as intended.)
+10111	IGNORE	(Informational: ZAP found the sign-in form.)
+10112	IGNORE	(Informational: ZAP found the session cookie.)
+10031	IGNORE	(Registration re-displays what was typed after a validation error; Django escapes it, proven by tests/test_flows.py::test_reflected_form_values_are_escaped.)
