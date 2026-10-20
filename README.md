@@ -17,7 +17,7 @@ each one the way a county operation would need it:
 | Analytics | Open vs resolved, plus **median time to resolve, deadline breach rate and backlog age**, by ward and category, **reconstructable for any past date** from the history. |
 | SMS | Africa's Talking (sandbox), sent from an outbox after commit, retried on failure, with no personal details in the text. |
 
-**Live demo:** _add your Vercel URL here_ · **API:** Open311 GeoReport v2 at `/open311/v2/`
+**Live demo:** https://one-kenya-services.vercel.app · **API:** Open311 GeoReport v2 at `/open311/v2/`
 
 ---
 
@@ -78,8 +78,8 @@ Each item below was checked by something other than the code under test, or by a
 | Accessible | **axe-core**, WCAG 2.2 A/AA rules, 13 pages × 2 screen sizes × 4 roles | See `docs/evidence/axe_results.json` | `sh scripts/audit.sh` |
 | Usable on 3G | **Lighthouse**, phone, 400 kbps / 400 ms / 4× CPU | See `docs/evidence/lighthouse/` | `sh scripts/audit.sh` |
 | No obvious security holes | **OWASP ZAP baseline** | 0 failures; each warning fixed or justified in `zap-rules.tsv` | `docs/evidence/zap/` |
-| SMS reaches a phone | Africa's Talking **sandbox simulator** | _Pending: needs your sandbox key_ | `docs/evidence/README.md` |
-| Real people can use it | **5-person usability test** | _Pending: script and template ready_ | `docs/usability/` |
+| SMS sending | Africa's Talking sandbox API, mocked in tests | Tested in code; the live demo logs SMS instead of sending (no API key set) | `tests/test_notifications.py` |
+| Real people can use it | 5-person usability test | Not run yet; the test script and results template are ready | `docs/usability/` |
 
 `docs/evidence/README.md` describes each run, including what failed along the way and was fixed.
 
