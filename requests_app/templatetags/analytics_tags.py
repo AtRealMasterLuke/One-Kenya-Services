@@ -1,5 +1,7 @@
 from django import template
 
+from requests_app.models import Status
+
 register = template.Library()
 
 BAND_LABELS = {
@@ -33,3 +35,12 @@ def pct_bucket(value):
 @register.filter
 def band_label(key):
     return BAND_LABELS.get(key, key)
+
+
+@register.filter
+def status_label(value):
+    """'in_progress' -> 'In progress', for history entries that store the raw status."""
+    try:
+        return Status(value).label
+    except ValueError:
+        return value

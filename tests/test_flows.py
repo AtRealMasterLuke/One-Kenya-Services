@@ -141,3 +141,13 @@ def test_cron_endpoint_needs_the_secret(client, settings):
     assert client.get("/cron/maintenance", HTTP_AUTHORIZATION="Bearer wrong").status_code == 401
     resp = client.get("/cron/maintenance", HTTP_AUTHORIZATION="Bearer s3cret")
     assert resp.status_code == 200 and set(resp.json()) == {"escalated", "auto_closed", "sms_sent"}
+
+
+@pytest.mark.django_db
+def test_history_shows_readable_status_names(client, citizen, make_request, water_officer):
+    req = make_request("water_leak")
+    from requests_app import services
+    services.transition(req, Status.IN_PROGRESS, water_officer)
+    login(client, citizen)
+    body = client.get(reverse("request_detail", args=[req.pk])).content.decode()
+    assert "In progress" in body and ">in_progress<" not in body.replace(" ", "").replace("\n", "")

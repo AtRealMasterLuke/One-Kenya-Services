@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load analytics_tags %}
 {% block title %}{{ req.reference }}{% endblock %}
 {% block content %}
 <p class="small"><a href="{% if user.is_county_staff %}{% url 'staff_queue' %}{% else %}{% url 'my_requests' %}{% endif %}">← Back</a></p>
@@ -41,7 +42,7 @@
       {% for e in events %}
       <li>
         <strong>
-          {% if e.kind == "status" %}{% if not e.from_status %}Reported{% else %}{{ e.get_to_status_display|default:e.to_status }}{% endif %}
+          {% if e.kind == "status" %}{% if not e.from_status %}Reported{% else %}{{ e.to_status|status_label }}{% endif %}
           {% elif e.kind == "escalation" %}Escalated
           {% elif e.kind == "merge" %}Duplicate merged in
           {% else %}Someone else is following{% endif %}
