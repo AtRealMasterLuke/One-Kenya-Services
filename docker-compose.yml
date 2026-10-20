@@ -1,3 +1,6 @@
+# Fixed project name, so networks are named the same on every machine (CI uses this).
+name: kenyamojaservices
+
 services:
   db:
     image: postgres:16
