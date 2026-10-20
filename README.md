@@ -45,44 +45,6 @@ Open http://localhost:8000. The first start downloads the IEBC ward boundaries (
 To send real sandbox SMS, put an Africa's Talking sandbox API key in `AT_API_KEY`. Without one,
 messages are logged and marked "skipped".
 
-## Tests
-
-```bash
-docker compose run --rm web pytest
-```
-
-That runs 132 tests against the compose PostgreSQL database. Run plain `pytest` outside Docker and the
-suite starts its own PostgreSQL through **Testcontainers**.
-
-* `test_state_machine.py`: **property-based** (Hypothesis): random sequences of actions by six kinds
-  of actor, with invariants checked after every step; plus the database trigger checked against
-  all 20 status pairs. A deliberately broken role check was caught (see *Evidence*).
-* `test_access.py`: every way to reach a case, for every kind of visitor.
-* `test_geo.py`: known places → expected wards; constituency agreement with an independent map;
-  duplicate radius, window, category and status rules.
-* `test_deadlines.py`: worked examples, including Mashujaa Day, plus a property test against a
-  brute-force minute counter.
-* `test_photos.py`, `test_open311.py`, `test_notifications.py`, `test_analytics.py`, `test_flows.py`.
-
-## Evidence that it works
-
-Each item below was checked by something other than the code under test, or by anyone reading this.
-
-| Claim | Checked by | Result | Reproduce |
-|---|---|---|---|
-| Dashboard numbers are right | An **independent re-implementation** (pandas + shapely, no Django) computing every figure from the raw CSV | **All 434 figures identical** at 3 snapshot dates; a single corrupted figure is detected | `docs/evidence/analytics_*.json`; CI job `replay` |
-| Speaks Open311 | **Code for America's `open311` client** (unmodified) lists services, posts, reads back, filters | Passes in XML; two bugs found *in the client* (JSON mode) | `docs/evidence/open311_client_check.txt`, `scripts/open311_client_check.py` |
-| Ward routing is right | Four boundary files scored against **IEBC constituencies** and the **GeoNames gazetteer** | IEBC 2012 best (92.4% / 90.5%); the first choice (GADM) would have misrouted ~1 in 7 | `docs/boundaries.md`, `docs/evidence/ward_source_comparison.txt` |
-| Known coordinates → wards | `data/known_points.csv`, built by a fixed rule from GeoNames | 8/9 pass; the 9th is outside its ward in all four boundary files (gazetteer error, kept as `xfail`) | `tests/test_geo.py` |
-| Tests catch real bugs | **Mutation check**: officers allowed in any department | Property test failed at once with a minimal example | `docs/evidence/README.md` |
-| Accessible | **axe-core**, WCAG 2.2 A/AA rules, 13 pages × 2 screen sizes × 4 roles | See `docs/evidence/axe_results.json` | `sh scripts/audit.sh` |
-| Usable on 3G | **Lighthouse**, phone, 400 kbps / 400 ms / 4× CPU | See `docs/evidence/lighthouse/` | `sh scripts/audit.sh` |
-| No obvious security holes | **OWASP ZAP baseline** | 0 failures; each warning fixed or justified in `zap-rules.tsv` | `docs/evidence/zap/` |
-| SMS sending | Africa's Talking sandbox API, mocked in tests | Tested in code; the live demo logs SMS instead of sending (no API key set) | `tests/test_notifications.py` |
-| Real people can use it | 5-person usability test | Not run yet; the test script and results template are ready | `docs/usability/` |
-
-`docs/evidence/README.md` describes each run, including what failed along the way and was fixed.
-
 ## How it works
 
 ### Case lifecycle
