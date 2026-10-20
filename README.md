@@ -42,9 +42,6 @@ Open http://localhost:8000. The first start downloads the IEBC ward boundaries (
 | 0700 000 010 / 011 / 012 | Officers: Water (MUWASCO) / Roads / Environment |
 | 0700 000 099 | County administrator (also the Django admin at `/django-admin/`) |
 
-To send real sandbox SMS, put an Africa's Talking sandbox API key in `AT_API_KEY`. Without one,
-messages are logged and marked "skipped".
-
 ## How it works
 
 ### Case lifecycle
