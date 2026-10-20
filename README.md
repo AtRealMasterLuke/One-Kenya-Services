@@ -159,7 +159,7 @@ Vercel runs the website; the database is a free Postgres from **Neon**, added th
 2. In the project, open **Storage → Create Database → Neon (Postgres)**, then connect it to the
    project. Vercel adds `DATABASE_URL` to the project's settings.
 3. Under **Settings → Environment Variables**, add `DJANGO_SECRET_KEY` (any long random text) and
-   `CRON_SECRET` (any random text). Optionally add `AT_API_KEY` for SMS.
+   `CRON_SECRET` (any random text).
 4. Copy the database's connection string (Storage → your database → **.env.local** tab →
    `DATABASE_URL`), then, on your computer, with Docker running:
 
