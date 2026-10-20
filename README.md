@@ -34,7 +34,7 @@ docker compose up --build
 Open http://localhost:8000. The first start downloads the IEBC ward boundaries (~19 MB) and replays
 3,654 real complaints in the background, which takes a few minutes.
 
-**Demo accounts** (password: `DEMO_PASSWORD` in `.env`, default `Murang-a-demo-2026`):
+**Demo accounts** (on your own copy, the password is `DEMO_PASSWORD` in `.env`, default `Murang-a-demo-2026`; for the live demo, use the password given with the submission):
 
 | Phone | Role |
 |---|---|
