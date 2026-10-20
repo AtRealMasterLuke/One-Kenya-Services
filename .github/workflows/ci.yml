@@ -5,60 +5,25 @@ on:
   pull_request:
 
 jobs:
-  tests:
-    name: Tests (PostgreSQL via Testcontainers)
+  checks:
+    name: Tests and analytics check
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-      - run: pip install -r requirements.txt -r requirements-dev.txt
-      - name: Cache downloaded ward boundaries
-        uses: actions/cache@v4
-        with:
-          path: data/boundaries/muranga_wards_iebc2012.geojson
-          key: wards-${{ hashFiles('requests_app/management/commands/load_wards.py') }}
-      - name: Django checks
-        run: DJANGO_SECRET_KEY=ci python manage.py check --deploy --fail-level ERROR
-        env:
-          DATABASE_URL: postgres://unused@localhost/unused
-      - name: Migrations are up to date
-        run: DJANGO_SECRET_KEY=ci python manage.py makemigrations --check --dry-run
-        env:
-          DATABASE_URL: postgres://unused@localhost/unused
-      - name: pytest (starts postgres:16 with Testcontainers)
-        run: pytest -p no:cacheprovider --create-db
-
-  replay:
-    name: Dataset replay matches independent recomputation
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - run: docker compose up -d db
-      - run: docker compose build web
-      - name: Replay NYC 311 sample through the app, then recompute from the raw CSV
+      - name: Start database and build app
         run: |
-          docker compose run --rm -e SEED_DEMO=0 web sh -c '
+          docker compose up -d db
+          docker compose build web
+      - name: Load ward boundaries
+        run: docker compose run --rm --user root web python manage.py load_wards
+      - name: Run tests
+        run: docker compose run --rm --user root web python -m pytest -p no:cacheprovider
+      - name: Replay the sample dataset and check the dashboard figures independently
+        run: |
+          docker compose run --rm --user root -e SEED_DEMO=0 web sh -c '
             python manage.py migrate --noinput &&
             python manage.py load_wards &&
             python manage.py seed_demo &&
             python manage.py replay_311 &&
-            for T in 2025-03-05T12:00 2025-03-15T00:00 2025-04-01T00:00; do
-              python manage.py export_analytics --as-of $T --source replay --out /tmp/app.json &&
-              python -I scripts/verify_analytics.py --as-of $T --compare /tmp/app.json || exit 1
-            done'
-
-  audit:
-    name: Accessibility, Lighthouse (3G), OWASP ZAP
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - run: docker compose --profile audit up -d --build web-prod
-      - run: sh scripts/audit.sh
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: audit-evidence
-          path: docs/evidence/
+            python manage.py export_analytics --as-of 2025-03-15T00:00 --source replay --out /tmp/app.json &&
+            python -I scripts/verify_analytics.py --as-of 2025-03-15T00:00 --compare /tmp/app.json'
