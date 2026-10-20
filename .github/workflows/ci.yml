@@ -14,8 +14,8 @@ jobs:
         run: |
           docker compose up -d db
           docker compose build web
-      - name: Load ward boundaries
-        run: docker compose run --rm --user root web python manage.py load_wards
+      - name: Create tables and load ward boundaries
+        run: docker compose run --rm --user root web sh -c "python manage.py migrate --noinput && python manage.py load_wards"
       - name: Run tests
         run: docker compose run --rm --user root web python -m pytest -p no:cacheprovider
       - name: Replay the sample dataset and check the dashboard figures independently
