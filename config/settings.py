@@ -125,7 +125,7 @@ STORAGES = {
     "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage" if ON_VERCEL
                     else "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
-WHITENOISE_USE_FINDERS = ON_VERCEL
+WHITENOISE_USE_FINDERS = ON_VERCEL or DEBUG  # serve straight from static/ when there is no collectstatic
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
